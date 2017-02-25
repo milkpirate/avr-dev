@@ -1,0 +1,16 @@
+gavrasm Gerd's AVR assembler version 3.4 (C)2014 by DG4FAC
+----------------------------------------------------------
+Source file: main.asm
+Hex file:    main.hex
+Eeprom file: main.eep
+Compiled:    25.03.2015, 12:31:52
+Pass:        1
+Error ==> 	out		TIMSK0
+[main.asm,226] 091: Missing or unknown parameter(s)!
+Error ==> 	out		TIFR0
+[main.asm,230] 091: Missing or unknown parameter(s)!
+Error ==> 	out		OCR0AL					; (doesnt affect SREG)
+[main.asm,267] 091: Missing or unknown parameter(s)!
+Error ==> 	out		OCR0AH
+[main.asm,270] 091: Missing or unknown parameter(s)!
+Compilation aborted, 4 errors!

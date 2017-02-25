@@ -1,0 +1,15 @@
+in main the graphdat is not initialized
+        i=0;
+        while(i<MAXSENSORS){
+                gTempdata[i]=0;
+                i++;
+        }
+
+security length check
+                // Cut the size for security reasons. If we are almost at the 
+                // end of the buffer then there is a zero but normally there is
+                // a lot of room and we can cut down the processing time as 
+                // correct URLs should be short in our case:
+                if ((dat_p+5+40) < BUFFER_SIZE){
+                        buf[dat_p+5+40]='\0';
+                }

@@ -1,0 +1,108 @@
+
+bin\Debug\t10-test.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000005c  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800040  0000005c  000000d0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000000d0  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000020  00000000  00000000  00000100  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000015b  00000000  00000000  00000120  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000000ed  00000000  00000000  0000027b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000000bb  00000000  00000000  00000368  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000024  00000000  00000000  00000424  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000000e2  00000000  00000000  00000448  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000010  00000000  00000000  0000052a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0a c0       	rjmp	.+20     	; 0x16 <__ctors_end>
+   2:	11 c0       	rjmp	.+34     	; 0x26 <__bad_interrupt>
+   4:	10 c0       	rjmp	.+32     	; 0x26 <__bad_interrupt>
+   6:	0f c0       	rjmp	.+30     	; 0x26 <__bad_interrupt>
+   8:	0e c0       	rjmp	.+28     	; 0x26 <__bad_interrupt>
+   a:	0d c0       	rjmp	.+26     	; 0x26 <__bad_interrupt>
+   c:	0c c0       	rjmp	.+24     	; 0x26 <__bad_interrupt>
+   e:	0b c0       	rjmp	.+22     	; 0x26 <__bad_interrupt>
+  10:	0a c0       	rjmp	.+20     	; 0x26 <__bad_interrupt>
+  12:	09 c0       	rjmp	.+18     	; 0x26 <__bad_interrupt>
+  14:	08 c0       	rjmp	.+16     	; 0x26 <__bad_interrupt>
+
+00000016 <__ctors_end>:
+  16:	11 27       	eor	r17, r17
+  18:	1f bf       	out	0x3f, r17	; 63
+  1a:	cf e5       	ldi	r28, 0x5F	; 95
+  1c:	d0 e0       	ldi	r29, 0x00	; 0
+  1e:	de bf       	out	0x3e, r29	; 62
+  20:	cd bf       	out	0x3d, r28	; 61
+  22:	02 d0       	rcall	.+4      	; 0x28 <main>
+  24:	19 c0       	rjmp	.+50     	; 0x58 <_exit>
+
+00000026 <__bad_interrupt>:
+  26:	ec cf       	rjmp	.-40     	; 0x0 <__vectors>
+
+00000028 <main>:
+#include <util/delay.h>
+#include <avr/io.h>
+
+static inline void setup() {
+  // configure PB2 pin
+  PUEB &= ~_BV(PUEB2);   // disable Pull-Up
+  28:	1a 98       	cbi	0x03, 2	; 3
+  DDRB |= _BV(DDB2);     // enable Output mode
+  2a:	0a 9a       	sbi	0x01, 2	; 1
+  PORTB &= ~_BV(PORTB2); // set output to Low
+  2c:	12 98       	cbi	0x02, 2	; 2
+
+  setup();
+
+  while (1) {
+
+    PORTB &= ~_BV(PORTB2);
+  2e:	12 98       	cbi	0x02, 2	; 2
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  30:	4f ef       	ldi	r20, 0xFF	; 255
+  32:	54 e3       	ldi	r21, 0x34	; 52
+  34:	6c e0       	ldi	r22, 0x0C	; 12
+  36:	41 50       	subi	r20, 0x01	; 1
+  38:	50 40       	sbci	r21, 0x00	; 0
+  3a:	60 40       	sbci	r22, 0x00	; 0
+  3c:	e1 f7       	brne	.-8      	; 0x36 <main+0xe>
+  3e:	00 c0       	rjmp	.+0      	; 0x40 <__SREG__+0x1>
+  40:	00 00       	nop
+    _delay_ms(500);
+
+    PORTB |= _BV(PORTB2);
+  42:	12 9a       	sbi	0x02, 2	; 2
+  44:	4f ef       	ldi	r20, 0xFF	; 255
+  46:	54 e3       	ldi	r21, 0x34	; 52
+  48:	6c e0       	ldi	r22, 0x0C	; 12
+  4a:	41 50       	subi	r20, 0x01	; 1
+  4c:	50 40       	sbci	r21, 0x00	; 0
+  4e:	60 40       	sbci	r22, 0x00	; 0
+  50:	e1 f7       	brne	.-8      	; 0x4a <__SREG__+0xb>
+  52:	00 c0       	rjmp	.+0      	; 0x54 <__SREG__+0x15>
+  54:	00 00       	nop
+  56:	eb cf       	rjmp	.-42     	; 0x2e <main+0x6>
+
+00000058 <_exit>:
+  58:	f8 94       	cli
+
+0000005a <__stop_program>:
+  5a:	ff cf       	rjmp	.-2      	; 0x5a <__stop_program>

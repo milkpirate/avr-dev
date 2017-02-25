@@ -1,0 +1,284 @@
+#projectdetails {
+  margin-top: 10px;
+}
+
+#projectdetails th.mainheader {
+  font-size: 12px;
+}
+
+#projectdetails th,
+#projectdetails td {
+  padding: 2px;
+  text-align: left;
+}
+#projectdetails th {
+  width: 40%;
+}
+
+#projectdetails ul {
+  margin: 0;
+  padding: 0;
+}
+
+#projectdetails ul li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#devicecard {
+}
+
+#devicecard th {
+  font-size: 13px;
+  text-align: left;
+  padding: 0 8px;
+}
+
+#devicecard th.compiler {
+  text-align: center;
+  padding: 0;
+}
+
+#devicecard td {
+}
+
+#devicecard td.project {
+  padding: 5px 8px;
+}
+
+#devicecard td.type {
+  width: 150px;
+  padding: 0 3px;
+}
+
+#devicecard td.compiler {
+  width: 70px;
+  text-align: center;
+}
+
+#devicecard .compiler img {
+	background: url('/modules/FreaksAcademy/badges/bg1.gif') no-repeat;
+}
+
+#search_projects {
+  float: left; 
+  text-align: left; 
+  margin: 0 15px 15px 0;
+}
+
+#search_projectname,
+#search_projecttype,
+#search_projectcompiler {
+  width: 290px;
+  border: 1px solid rgb(196, 196, 195); 
+  background-color: rgb(233, 241, 243);
+  margin: 0 0 5px 0;
+}
+
+#search_projects p {
+  width: 150px;
+  clear: both;
+  margin: 5px 0 0 0;
+}
+
+#projectsearch_options,
+#projectsearch_tags {
+  margin-top: 5px; 
+  float: left; 
+  width: 290px; 
+  height: 150px; 
+  overflow: auto;
+}
+
+#projectsearch_tags {
+  border: 1px solid #ccc;
+}
+#projectsearch_options {
+  padding: 5px;
+  border: 1px solid rgb(196, 196, 195);
+  background-color: rgb(233, 241, 243);
+}
+
+#show_hide_tags {
+  margin-left: 10px;
+}
+
+#projectsearch_tags h3 {
+  color: #000;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid #ccc;
+  padding: 0 5px;
+  background-color: #F5F5F5;
+}
+
+#projectsearch_tags .tagcloud {
+  padding: 0 5px;
+}
+
+#view_project .left {
+  float: left;
+  width: 65%;
+}
+
+#view_project .right {
+  float: right;
+  width: 30%;
+}
+
+#quizz {
+	background: url('/modules/FreaksAcademy/pnimages/hotpicks_b.gif') repeat-x;
+	background-position: left 14px;
+	margin:0;
+	height:151px !important;
+	overflow:hidden;
+}
+
+#quizzleft {
+	background: url('/modules/FreaksAcademy/pnimages/quizz_l.gif') no-repeat;
+	background-position: left 14px;
+	margin:0;
+	height:151px;
+	overflow:hidden;
+	width:100%;
+}
+
+#quizzright {
+	background: url('/modules/FreaksAcademy/pnimages/quizz_r.gif') no-repeat;
+	background-position: right top;
+	margin:0;
+	height:151px;
+	width:100%;
+}
+
+.quizztext span{
+	float:left;
+	display:block;
+	font-style: Lucida Grande, Verdana, Arial, Sans-Serif;
+	font-weight:normal;
+	color:#1C2D55;
+	font-size: 1em;
+	padding-top:9px;
+	padding-left:5px;
+	clear:both;
+}
+
+#finditleft_a {
+	background: url('/modules/FreaksAcademy/pnimages/search_l.gif') no-repeat;
+	background-position: left 14px;
+	margin:0;
+	height:181px;
+	overflow:hidden;
+	width:100%;
+}
+
+#finditright_a {
+	background: url('/modules/FreaksAcademy/pnimages/search_r.gif') no-repeat;
+	background-position: right 14px;
+	margin:0;
+	height:181px;
+	width:100%;
+}
+
+#hotpicks {
+	background: url('/modules/FreaksAcademy/pnimages/hotpicks_b.gif') repeat-x;
+	background-position: left 14px;
+	margin:0;
+	height:151px ! important;
+	overflow:hidden;
+}
+
+
+#hotpicksleft {
+	background: url('/modules/FreaksAcademy/pnimages/hotpicks_l.gif') no-repeat;
+	background-position: left 14px;
+	margin:0;
+	height:151px;
+	overflow:hidden;
+	width:100%;
+}
+
+#hotpicksright {
+	background: url('/modules/FreaksAcademy/pnimages/hotpicks_freak.gif') no-repeat;
+	background-position: right top;
+	margin:0;
+	height:151px;
+	width:100%;
+}
+
+#newstuffleft {
+	background: url('/modules/FreaksAcademy/pnimages/newstuff_l.gif') no-repeat;
+	background-position: left 14px;
+	margin:0;
+	height:151px;
+	overflow:hidden;
+	width:100%;
+}
+
+#newstuffsright {
+	background: url('/modules/FreaksAcademy/pnimages/newstuff_r.gif') no-repeat;
+	background-position: right 14px;
+	margin:0;
+	height:151px;
+	width:100%;
+}
+
+#finditleft {
+	background: url('/modules/FreaksAcademy/pnimages/findit_l.gif') no-repeat;
+	background-position: left 14px;
+	margin:0;
+	height:151px;
+	overflow:hidden;
+	width:100%;
+}
+
+#finditright {
+	background: url('/modules/FreaksAcademy/pnimages/findit_r.gif') no-repeat;
+	background-position: right 14px;
+	margin:0;
+	height:151px;
+	width:100%;
+}
+
+
+.hotpickstext a:link, .hotpickstext span{
+	float:left;
+	display:block;
+	font-style: Lucida Grande, Verdana, Arial, Sans-Serif;
+	font-weight:normal;
+	color:#1C2D55;
+	font-size: 1em;
+	padding-top:9px;
+	padding-left:5px;
+	clear:both;
+}
+
+.hotpickstext a:visited{
+	float:left;
+	font-style: Lucida Grande, Verdana, Arial, Sans-Serif;
+	display:block;
+	padding-top:9px;
+	padding-left:5px;
+	clear:both;
+}
+
+
+.hotpickstext a:hover {
+	color:red;
+	text-decoration:none;
+	display:block
+}
+
+#hotdot{padding-right:6px;padding-left:3px;padding-top:0px}
+#hotspace{height:30px;margin:0px;display:block;clear:both;}
+
+#main #catindex .subcolumn { width: 49%; float:left;margin-right: 1%;display:block;text-align:top; height: 6em;}
+#catindex dl {margin-top: 0px;}
+#catindex dt {padding-top: 5px; font-weight: bold; font-size: 14px; border-top: solid 1px #ddd;}
+#catindex dd {margin: 0; padding:0 0 15px 0; font-size: 11px; color: #666;}
+
+#small_active, .small_active {
+font-weight: bold !important;
+color: red !important;
+}

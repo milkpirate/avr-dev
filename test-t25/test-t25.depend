@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1423677670 source:c:\users\lenny\documents\atmel\test-t25\fuse.c
+	<avr/io.h>
+
+1423677941 source:c:\users\lenny\documents\atmel\test-t25\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+
+1423677670 source:c:\users\lenny\documents\elektronik\atmel\test-t25\fuse.c
+	<avr/io.h>
+

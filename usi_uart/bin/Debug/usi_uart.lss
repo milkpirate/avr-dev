@@ -1,0 +1,589 @@
+
+bin\Debug\usi_uart.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000364  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         0000000a  00800060  00000364  000003f8  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000008  0080006a  0080006a  00000402  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000402  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000058  00000000  00000000  00000432  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000002fb  00000000  00000000  0000048a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000001ab  00000000  00000000  00000785  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000013f  00000000  00000000  00000930  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000124  00000000  00000000  00000a70  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000001fe  00000000  00000000  00000b94  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000244  00000000  00000000  00000d92  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000038  00000000  00000000  00000fd6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
+   2:	26 c0       	rjmp	.+76     	; 0x50 <__bad_interrupt>
+   4:	25 c0       	rjmp	.+74     	; 0x50 <__bad_interrupt>
+   6:	24 c0       	rjmp	.+72     	; 0x50 <__bad_interrupt>
+   8:	23 c0       	rjmp	.+70     	; 0x50 <__bad_interrupt>
+   a:	83 c1       	rjmp	.+774    	; 0x312 <__vector_5>
+   c:	21 c0       	rjmp	.+66     	; 0x50 <__bad_interrupt>
+   e:	20 c0       	rjmp	.+64     	; 0x50 <__bad_interrupt>
+  10:	1f c0       	rjmp	.+62     	; 0x50 <__bad_interrupt>
+  12:	1e c0       	rjmp	.+60     	; 0x50 <__bad_interrupt>
+  14:	1d c0       	rjmp	.+58     	; 0x50 <__bad_interrupt>
+  16:	1c c0       	rjmp	.+56     	; 0x50 <__bad_interrupt>
+  18:	1b c0       	rjmp	.+54     	; 0x50 <__bad_interrupt>
+  1a:	1a c0       	rjmp	.+52     	; 0x50 <__bad_interrupt>
+  1c:	e3 c0       	rjmp	.+454    	; 0x1e4 <__vector_14>
+
+0000001e <__ctors_end>:
+  1e:	11 24       	eor	r1, r1
+  20:	1f be       	out	0x3f, r1	; 63
+  22:	cf ed       	ldi	r28, 0xDF	; 223
+  24:	cd bf       	out	0x3d, r28	; 61
+
+00000026 <__do_copy_data>:
+  26:	10 e0       	ldi	r17, 0x00	; 0
+  28:	a0 e6       	ldi	r26, 0x60	; 96
+  2a:	b0 e0       	ldi	r27, 0x00	; 0
+  2c:	e4 e6       	ldi	r30, 0x64	; 100
+  2e:	f3 e0       	ldi	r31, 0x03	; 3
+  30:	02 c0       	rjmp	.+4      	; 0x36 <__do_copy_data+0x10>
+  32:	05 90       	lpm	r0, Z+
+  34:	0d 92       	st	X+, r0
+  36:	aa 36       	cpi	r26, 0x6A	; 106
+  38:	b1 07       	cpc	r27, r17
+  3a:	d9 f7       	brne	.-10     	; 0x32 <__do_copy_data+0xc>
+
+0000003c <__do_clear_bss>:
+  3c:	20 e0       	ldi	r18, 0x00	; 0
+  3e:	aa e6       	ldi	r26, 0x6A	; 106
+  40:	b0 e0       	ldi	r27, 0x00	; 0
+  42:	01 c0       	rjmp	.+2      	; 0x46 <.do_clear_bss_start>
+
+00000044 <.do_clear_bss_loop>:
+  44:	1d 92       	st	X+, r1
+
+00000046 <.do_clear_bss_start>:
+  46:	a2 37       	cpi	r26, 0x72	; 114
+  48:	b2 07       	cpc	r27, r18
+  4a:	e1 f7       	brne	.-8      	; 0x44 <.do_clear_bss_loop>
+  4c:	02 d0       	rcall	.+4      	; 0x52 <main>
+  4e:	88 c1       	rjmp	.+784    	; 0x360 <_exit>
+
+00000050 <__bad_interrupt>:
+  50:	d7 cf       	rjmp	.-82     	; 0x0 <__vectors>
+
+00000052 <main>:
+#include <avr/io.h>
+#include "USI_UART_config.h"
+
+int main( void )
+{
+  52:	cf 93       	push	r28
+  54:	df 93       	push	r29
+  56:	cd b7       	in	r28, 0x3d	; 61
+  58:	dd 27       	eor	r29, r29
+  5a:	ca 50       	subi	r28, 0x0A	; 10
+  5c:	cd bf       	out	0x3d, r28	; 61
+    unsigned char myString[] = "\n\rhello!";
+  5e:	89 e0       	ldi	r24, 0x09	; 9
+  60:	e0 e6       	ldi	r30, 0x60	; 96
+  62:	f0 e0       	ldi	r31, 0x00	; 0
+  64:	de 01       	movw	r26, r28
+  66:	12 96       	adiw	r26, 0x02	; 2
+  68:	01 90       	ld	r0, Z+
+  6a:	0d 92       	st	X+, r0
+  6c:	8a 95       	dec	r24
+  6e:	e1 f7       	brne	.-8      	; 0x68 <main+0x16>
+
+    while(1)
+    {
+		for(uint8_t counter = 0; counter < 20; counter++)
+  70:	19 82       	std	Y+1, r1	; 0x01
+  72:	0e c0       	rjmp	.+28     	; 0x90 <main+0x3e>
+			USI_UART_Transmit_Byte( (unsigned int)myString[counter] );
+  74:	89 81       	ldd	r24, Y+1	; 0x01
+  76:	88 2f       	mov	r24, r24
+  78:	90 e0       	ldi	r25, 0x00	; 0
+  7a:	9e 01       	movw	r18, r28
+  7c:	2e 5f       	subi	r18, 0xFE	; 254
+  7e:	3f 4f       	sbci	r19, 0xFF	; 255
+  80:	82 0f       	add	r24, r18
+  82:	93 1f       	adc	r25, r19
+  84:	fc 01       	movw	r30, r24
+  86:	80 81       	ld	r24, Z
+  88:	3c d0       	rcall	.+120    	; 0x102 <USI_UART_Transmit_Byte>
+{
+    unsigned char myString[] = "\n\rhello!";
+
+    while(1)
+    {
+		for(uint8_t counter = 0; counter < 20; counter++)
+  8a:	89 81       	ldd	r24, Y+1	; 0x01
+  8c:	8f 5f       	subi	r24, 0xFF	; 255
+  8e:	89 83       	std	Y+1, r24	; 0x01
+  90:	89 81       	ldd	r24, Y+1	; 0x01
+  92:	84 31       	cpi	r24, 0x14	; 20
+  94:	78 f3       	brcs	.-34     	; 0x74 <main+0x22>
+			USI_UART_Transmit_Byte( (unsigned int)myString[counter] );
+    }
+  96:	ec cf       	rjmp	.-40     	; 0x70 <main+0x1e>
+
+00000098 <Bit_Reverse>:
+//********** USI_UART functions **********//
+
+// Reverses the order of bits in a byte.
+// I.e. MSB is swapped with LSB, etc.
+unsigned char Bit_Reverse( unsigned char x )
+{
+  98:	cf 93       	push	r28
+  9a:	df 93       	push	r29
+  9c:	1f 92       	push	r1
+  9e:	cd b7       	in	r28, 0x3d	; 61
+  a0:	dd 27       	eor	r29, r29
+  a2:	89 83       	std	Y+1, r24	; 0x01
+    x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
+  a4:	89 81       	ldd	r24, Y+1	; 0x01
+  a6:	86 95       	lsr	r24
+  a8:	28 2f       	mov	r18, r24
+  aa:	25 75       	andi	r18, 0x55	; 85
+  ac:	89 81       	ldd	r24, Y+1	; 0x01
+  ae:	88 2f       	mov	r24, r24
+  b0:	90 e0       	ldi	r25, 0x00	; 0
+  b2:	88 0f       	add	r24, r24
+  b4:	99 1f       	adc	r25, r25
+  b6:	8a 7a       	andi	r24, 0xAA	; 170
+  b8:	82 2b       	or	r24, r18
+  ba:	89 83       	std	Y+1, r24	; 0x01
+    x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);
+  bc:	89 81       	ldd	r24, Y+1	; 0x01
+  be:	86 95       	lsr	r24
+  c0:	86 95       	lsr	r24
+  c2:	28 2f       	mov	r18, r24
+  c4:	23 73       	andi	r18, 0x33	; 51
+  c6:	89 81       	ldd	r24, Y+1	; 0x01
+  c8:	88 2f       	mov	r24, r24
+  ca:	90 e0       	ldi	r25, 0x00	; 0
+  cc:	88 0f       	add	r24, r24
+  ce:	99 1f       	adc	r25, r25
+  d0:	88 0f       	add	r24, r24
+  d2:	99 1f       	adc	r25, r25
+  d4:	8c 7c       	andi	r24, 0xCC	; 204
+  d6:	82 2b       	or	r24, r18
+  d8:	89 83       	std	Y+1, r24	; 0x01
+    x = ((x >> 4) & 0x0f) | ((x << 4) & 0xf0);
+  da:	89 81       	ldd	r24, Y+1	; 0x01
+  dc:	82 95       	swap	r24
+  de:	8f 70       	andi	r24, 0x0F	; 15
+  e0:	28 2f       	mov	r18, r24
+  e2:	89 81       	ldd	r24, Y+1	; 0x01
+  e4:	88 2f       	mov	r24, r24
+  e6:	90 e0       	ldi	r25, 0x00	; 0
+  e8:	82 95       	swap	r24
+  ea:	92 95       	swap	r25
+  ec:	90 7f       	andi	r25, 0xF0	; 240
+  ee:	98 27       	eor	r25, r24
+  f0:	80 7f       	andi	r24, 0xF0	; 240
+  f2:	98 27       	eor	r25, r24
+  f4:	82 2b       	or	r24, r18
+  f6:	89 83       	std	Y+1, r24	; 0x01
+    return x;
+  f8:	89 81       	ldd	r24, Y+1	; 0x01
+}
+  fa:	0f 90       	pop	r0
+  fc:	df 91       	pop	r29
+  fe:	cf 91       	pop	r28
+ 100:	08 95       	ret
+
+00000102 <USI_UART_Transmit_Byte>:
+
+// Puts data in the transmission buffer, after reverseing the bits in the byte.
+// Initiates the transmission rutines if not already started.
+void USI_UART_Transmit_Byte( unsigned char data )
+{
+ 102:	0f 93       	push	r16
+ 104:	1f 93       	push	r17
+ 106:	cf 93       	push	r28
+ 108:	df 93       	push	r29
+ 10a:	00 d0       	rcall	.+0      	; 0x10c <USI_UART_Transmit_Byte+0xa>
+ 10c:	cd b7       	in	r28, 0x3d	; 61
+ 10e:	dd 27       	eor	r29, r29
+ 110:	8a 83       	std	Y+2, r24	; 0x02
+    unsigned char tmphead;
+
+    tmphead = ( UART_TxHead + 1 ) & UART_TX_BUFFER_MASK;        // Calculate buffer index.
+ 112:	80 91 6f 00 	lds	r24, 0x006F
+ 116:	8f 5f       	subi	r24, 0xFF	; 255
+ 118:	83 70       	andi	r24, 0x03	; 3
+ 11a:	89 83       	std	Y+1, r24	; 0x01
+    while ( tmphead == UART_TxTail );                           // Wait for free space in buffer.
+ 11c:	00 00       	nop
+ 11e:	80 91 70 00 	lds	r24, 0x0070
+ 122:	99 81       	ldd	r25, Y+1	; 0x01
+ 124:	98 17       	cp	r25, r24
+ 126:	d9 f3       	breq	.-10     	; 0x11e <USI_UART_Transmit_Byte+0x1c>
+    UART_TxBuf[tmphead] = Bit_Reverse(data);                    // Reverse the order of the bits in the data byte and store data in buffer.
+ 128:	89 81       	ldd	r24, Y+1	; 0x01
+ 12a:	08 2f       	mov	r16, r24
+ 12c:	10 e0       	ldi	r17, 0x00	; 0
+ 12e:	8a 81       	ldd	r24, Y+2	; 0x02
+ 130:	b3 df       	rcall	.-154    	; 0x98 <Bit_Reverse>
+ 132:	28 2f       	mov	r18, r24
+ 134:	c8 01       	movw	r24, r16
+ 136:	85 59       	subi	r24, 0x95	; 149
+ 138:	9f 4f       	sbci	r25, 0xFF	; 255
+ 13a:	fc 01       	movw	r30, r24
+ 13c:	20 83       	st	Z, r18
+    UART_TxHead = tmphead;                                      // Store new index.
+ 13e:	89 81       	ldd	r24, Y+1	; 0x01
+ 140:	80 93 6f 00 	sts	0x006F, r24
+
+    if ( !USI_UART_status.ongoing_Transmission_From_Buffer )    // Start transmission from buffer (if not already started).
+ 144:	80 91 71 00 	lds	r24, 0x0071
+ 148:	81 70       	andi	r24, 0x01	; 1
+ 14a:	88 23       	and	r24, r24
+ 14c:	09 f0       	breq	.+2      	; 0x150 <USI_UART_Transmit_Byte+0x4e>
+ 14e:	43 c0       	rjmp	.+134    	; 0x1d6 <USI_UART_Transmit_Byte+0xd4>
+    {
+		cli();
+ 150:	f8 94       	cli
+		UART_TxTail = 0;
+ 152:	10 92 70 00 	sts	0x0070, r1
+		UART_TxHead = 0;
+ 156:	10 92 6f 00 	sts	0x006F, r1
+
+		TCNT0  = 0x00;
+ 15a:	82 e5       	ldi	r24, 0x52	; 82
+ 15c:	90 e0       	ldi	r25, 0x00	; 0
+ 15e:	fc 01       	movw	r30, r24
+ 160:	10 82       	st	Z, r1
+		GTCCR  |= (1<<PSR0);
+ 162:	8c e4       	ldi	r24, 0x4C	; 76
+ 164:	90 e0       	ldi	r25, 0x00	; 0
+ 166:	2c e4       	ldi	r18, 0x4C	; 76
+ 168:	30 e0       	ldi	r19, 0x00	; 0
+ 16a:	f9 01       	movw	r30, r18
+ 16c:	20 81       	ld	r18, Z
+ 16e:	21 60       	ori	r18, 0x01	; 1
+ 170:	fc 01       	movw	r30, r24
+ 172:	20 83       	st	Z, r18
+		TCCR0B = (0<<CS02)|(0<<CS01)|(1<<CS00);         // Reset the prescaler and start Timer0.
+ 174:	83 e5       	ldi	r24, 0x53	; 83
+ 176:	90 e0       	ldi	r25, 0x00	; 0
+ 178:	21 e0       	ldi	r18, 0x01	; 1
+ 17a:	fc 01       	movw	r30, r24
+ 17c:	20 83       	st	Z, r18
+		TIFR   = (1<<TOV0);                                       // Clear Timer0 OVF interrupt flag.
+ 17e:	88 e5       	ldi	r24, 0x58	; 88
+ 180:	90 e0       	ldi	r25, 0x00	; 0
+ 182:	22 e0       	ldi	r18, 0x02	; 2
+ 184:	fc 01       	movw	r30, r24
+ 186:	20 83       	st	Z, r18
+		TIMSK |= (1<<TOIE0);                                      // Enable Timer0 OVF interrupt.
+ 188:	89 e5       	ldi	r24, 0x59	; 89
+ 18a:	90 e0       	ldi	r25, 0x00	; 0
+ 18c:	29 e5       	ldi	r18, 0x59	; 89
+ 18e:	30 e0       	ldi	r19, 0x00	; 0
+ 190:	f9 01       	movw	r30, r18
+ 192:	20 81       	ld	r18, Z
+ 194:	22 60       	ori	r18, 0x02	; 2
+ 196:	fc 01       	movw	r30, r24
+ 198:	20 83       	st	Z, r18
+
+		USICR  = (0<<USISIE)|(1<<USIOIE)|                         // Enable USI Counter OVF interrupt.
+ 19a:	8d e2       	ldi	r24, 0x2D	; 45
+ 19c:	90 e0       	ldi	r25, 0x00	; 0
+ 19e:	24 e5       	ldi	r18, 0x54	; 84
+ 1a0:	fc 01       	movw	r30, r24
+ 1a2:	20 83       	st	Z, r18
+				 (0<<USIWM1)|(1<<USIWM0)|                         // Select Three Wire mode.
+				 (0<<USICS1)|(1<<USICS0)|(0<<USICLK)|             // Select Timer0 OVER as USI Clock source.
+				 (0<<USITC);
+
+		USIDR  = 0xFF;                                            // Make sure MSB is '1' before enabling USI_DO.
+ 1a4:	8f e2       	ldi	r24, 0x2F	; 47
+ 1a6:	90 e0       	ldi	r25, 0x00	; 0
+ 1a8:	2f ef       	ldi	r18, 0xFF	; 255
+ 1aa:	fc 01       	movw	r30, r24
+ 1ac:	20 83       	st	Z, r18
+		USISR  = 0xF0 |                                           // Clear all USI interrupt flags.
+ 1ae:	8e e2       	ldi	r24, 0x2E	; 46
+ 1b0:	90 e0       	ldi	r25, 0x00	; 0
+ 1b2:	2f ef       	ldi	r18, 0xFF	; 255
+ 1b4:	fc 01       	movw	r30, r24
+ 1b6:	20 83       	st	Z, r18
+				 0x0F;                                            // Preload the USI counter to generate interrupt at first USI clock.
+		DDRB  |= (1<<PB1);                                        // Configure USI_DO as output.
+ 1b8:	87 e3       	ldi	r24, 0x37	; 55
+ 1ba:	90 e0       	ldi	r25, 0x00	; 0
+ 1bc:	27 e3       	ldi	r18, 0x37	; 55
+ 1be:	30 e0       	ldi	r19, 0x00	; 0
+ 1c0:	f9 01       	movw	r30, r18
+ 1c2:	20 81       	ld	r18, Z
+ 1c4:	22 60       	ori	r18, 0x02	; 2
+ 1c6:	fc 01       	movw	r30, r24
+ 1c8:	20 83       	st	Z, r18
+
+		USI_UART_status.ongoing_Transmission_From_Buffer = TRUE;
+ 1ca:	80 91 71 00 	lds	r24, 0x0071
+ 1ce:	81 60       	ori	r24, 0x01	; 1
+ 1d0:	80 93 71 00 	sts	0x0071, r24
+
+		sei();
+ 1d4:	78 94       	sei
+    }
+}
+ 1d6:	ce 5f       	subi	r28, 0xFE	; 254
+ 1d8:	cd bf       	out	0x3d, r28	; 61
+ 1da:	df 91       	pop	r29
+ 1dc:	cf 91       	pop	r28
+ 1de:	1f 91       	pop	r17
+ 1e0:	0f 91       	pop	r16
+ 1e2:	08 95       	ret
+
+000001e4 <__vector_14>:
+// ********** Interrupt Handlers ********** //
+
+// The USI Counter Overflow interrupt is used for moving data between memmory and the USI data register.
+// The interrupt is used for both transmission and reception.
+ISR(USI_OVF_vect)
+{
+ 1e4:	1f 92       	push	r1
+ 1e6:	0f 92       	push	r0
+ 1e8:	00 90 5f 00 	lds	r0, 0x005F
+ 1ec:	0f 92       	push	r0
+ 1ee:	11 24       	eor	r1, r1
+ 1f0:	2f 93       	push	r18
+ 1f2:	3f 93       	push	r19
+ 1f4:	8f 93       	push	r24
+ 1f6:	9f 93       	push	r25
+ 1f8:	ef 93       	push	r30
+ 1fa:	ff 93       	push	r31
+ 1fc:	cf 93       	push	r28
+ 1fe:	df 93       	push	r29
+ 200:	1f 92       	push	r1
+ 202:	cd b7       	in	r28, 0x3d	; 61
+ 204:	dd 27       	eor	r29, r29
+    unsigned char tmptail;
+
+	// If ongoing transmission, then send second half of transmit data.
+	if( USI_UART_status.ongoing_Transmission_Of_Package )
+ 206:	80 91 71 00 	lds	r24, 0x0071
+ 20a:	82 70       	andi	r24, 0x02	; 2
+ 20c:	88 23       	and	r24, r24
+ 20e:	d1 f0       	breq	.+52     	; 0x244 <__vector_14+0x60>
+	{
+		USI_UART_status.ongoing_Transmission_Of_Package = FALSE;    // Clear on-going package transmission flag.
+ 210:	80 91 71 00 	lds	r24, 0x0071
+ 214:	8d 7f       	andi	r24, 0xFD	; 253
+ 216:	80 93 71 00 	sts	0x0071, r24
+
+		USISR = 0xF0 | (USI_COUNTER_SEED_TRANSMIT);                 // Load USI Counter seed and clear all USI flags.
+ 21a:	8e e2       	ldi	r24, 0x2E	; 46
+ 21c:	90 e0       	ldi	r25, 0x00	; 0
+ 21e:	2b ef       	ldi	r18, 0xFB	; 251
+ 220:	fc 01       	movw	r30, r24
+ 222:	20 83       	st	Z, r18
+		USIDR = (USI_UART_TxData << 3) | 0x07;                      // Reload the USIDR with the rest of the data and a stop-bit.
+ 224:	8f e2       	ldi	r24, 0x2F	; 47
+ 226:	90 e0       	ldi	r25, 0x00	; 0
+ 228:	20 91 6a 00 	lds	r18, 0x006A
+ 22c:	22 2f       	mov	r18, r18
+ 22e:	30 e0       	ldi	r19, 0x00	; 0
+ 230:	22 0f       	add	r18, r18
+ 232:	33 1f       	adc	r19, r19
+ 234:	22 0f       	add	r18, r18
+ 236:	33 1f       	adc	r19, r19
+ 238:	22 0f       	add	r18, r18
+ 23a:	33 1f       	adc	r19, r19
+ 23c:	27 60       	ori	r18, 0x07	; 7
+ 23e:	fc 01       	movw	r30, r24
+ 240:	20 83       	st	Z, r18
+ 242:	58 c0       	rjmp	.+176    	; 0x2f4 <__vector_14+0x110>
+	}
+	// Else start sendinbg more data or leave transmit mode.
+	else
+	{
+		// If there is data in the transmit buffer, then send first half of data.
+		if ( UART_TxHead != UART_TxTail )
+ 244:	90 91 6f 00 	lds	r25, 0x006F
+ 248:	80 91 70 00 	lds	r24, 0x0070
+ 24c:	98 17       	cp	r25, r24
+ 24e:	29 f1       	breq	.+74     	; 0x29a <__vector_14+0xb6>
+		{
+			USI_UART_status.ongoing_Transmission_Of_Package = TRUE; // Set on-going package transmission flag.
+ 250:	80 91 71 00 	lds	r24, 0x0071
+ 254:	82 60       	ori	r24, 0x02	; 2
+ 256:	80 93 71 00 	sts	0x0071, r24
+
+			tmptail = ( UART_TxTail + 1 ) & UART_TX_BUFFER_MASK;    // Calculate buffer index.
+ 25a:	80 91 70 00 	lds	r24, 0x0070
+ 25e:	8f 5f       	subi	r24, 0xFF	; 255
+ 260:	83 70       	andi	r24, 0x03	; 3
+ 262:	89 83       	std	Y+1, r24	; 0x01
+			UART_TxTail = tmptail;                                  // Store new index.
+ 264:	89 81       	ldd	r24, Y+1	; 0x01
+ 266:	80 93 70 00 	sts	0x0070, r24
+			USI_UART_TxData = UART_TxBuf[tmptail];                  // Read out the data that is to be sent. Note that the data must be bit reversed before sent.
+ 26a:	89 81       	ldd	r24, Y+1	; 0x01
+ 26c:	88 2f       	mov	r24, r24
+ 26e:	90 e0       	ldi	r25, 0x00	; 0
+ 270:	85 59       	subi	r24, 0x95	; 149
+ 272:	9f 4f       	sbci	r25, 0xFF	; 255
+ 274:	fc 01       	movw	r30, r24
+ 276:	80 81       	ld	r24, Z
+ 278:	80 93 6a 00 	sts	0x006A, r24
+																	// The bit reversing is moved to the application section to save time within the interrupt.
+			USISR  = 0xF0 | (USI_COUNTER_SEED_TRANSMIT);            // Load USI Counter seed and clear all USI flags.
+ 27c:	8e e2       	ldi	r24, 0x2E	; 46
+ 27e:	90 e0       	ldi	r25, 0x00	; 0
+ 280:	2b ef       	ldi	r18, 0xFB	; 251
+ 282:	fc 01       	movw	r30, r24
+ 284:	20 83       	st	Z, r18
+			USIDR  = (USI_UART_TxData >> 2) | 0x80;                 // Copy (initial high state,) start-bit and 6 LSB of original data (6 MSB
+ 286:	8f e2       	ldi	r24, 0x2F	; 47
+ 288:	90 e0       	ldi	r25, 0x00	; 0
+ 28a:	20 91 6a 00 	lds	r18, 0x006A
+ 28e:	26 95       	lsr	r18
+ 290:	26 95       	lsr	r18
+ 292:	20 68       	ori	r18, 0x80	; 128
+ 294:	fc 01       	movw	r30, r24
+ 296:	20 83       	st	Z, r18
+ 298:	2d c0       	rjmp	.+90     	; 0x2f4 <__vector_14+0x110>
+																	//  of bit of bit reversed data).
+		}
+		// Else enter receive mode.
+		else
+		{
+			USI_UART_status.ongoing_Transmission_From_Buffer = FALSE;
+ 29a:	80 91 71 00 	lds	r24, 0x0071
+ 29e:	8e 7f       	andi	r24, 0xFE	; 254
+ 2a0:	80 93 71 00 	sts	0x0071, r24
+
+			TCCR0B = (0<<CS02)|(0<<CS01)|(0<<CS00);                 // Stop Timer0.
+ 2a4:	83 e5       	ldi	r24, 0x53	; 83
+ 2a6:	90 e0       	ldi	r25, 0x00	; 0
+ 2a8:	fc 01       	movw	r30, r24
+ 2aa:	10 82       	st	Z, r1
+			PORTB |=   (1<<PB3)|(1<<PB2)|(1<<PB1)|(1<<PB0);         // Enable pull up on USI DO, DI and SCK pins. (And PB3 because of pin change interrupt)
+ 2ac:	88 e3       	ldi	r24, 0x38	; 56
+ 2ae:	90 e0       	ldi	r25, 0x00	; 0
+ 2b0:	28 e3       	ldi	r18, 0x38	; 56
+ 2b2:	30 e0       	ldi	r19, 0x00	; 0
+ 2b4:	f9 01       	movw	r30, r18
+ 2b6:	20 81       	ld	r18, Z
+ 2b8:	2f 60       	ori	r18, 0x0F	; 15
+ 2ba:	fc 01       	movw	r30, r24
+ 2bc:	20 83       	st	Z, r18
+			DDRB  &= ~((1<<PB3)|(1<<PB2)|(1<<PB1)|(1<<PB0));        // Set USI DI, DO and SCK pins as inputs.
+ 2be:	87 e3       	ldi	r24, 0x37	; 55
+ 2c0:	90 e0       	ldi	r25, 0x00	; 0
+ 2c2:	27 e3       	ldi	r18, 0x37	; 55
+ 2c4:	30 e0       	ldi	r19, 0x00	; 0
+ 2c6:	f9 01       	movw	r30, r18
+ 2c8:	20 81       	ld	r18, Z
+ 2ca:	20 7f       	andi	r18, 0xF0	; 240
+ 2cc:	fc 01       	movw	r30, r24
+ 2ce:	20 83       	st	Z, r18
+			USICR  =  0;                                            // Disable USI.
+ 2d0:	8d e2       	ldi	r24, 0x2D	; 45
+ 2d2:	90 e0       	ldi	r25, 0x00	; 0
+ 2d4:	fc 01       	movw	r30, r24
+ 2d6:	10 82       	st	Z, r1
+			GIFR   =  (1<<PCIF);                                    // Clear pin change interrupt flag.
+ 2d8:	8a e5       	ldi	r24, 0x5A	; 90
+ 2da:	90 e0       	ldi	r25, 0x00	; 0
+ 2dc:	20 e2       	ldi	r18, 0x20	; 32
+ 2de:	fc 01       	movw	r30, r24
+ 2e0:	20 83       	st	Z, r18
+			GIMSK |=  (1<<PCIE);                                    // Enable pin change interrupt for PB3:0.
+ 2e2:	8b e5       	ldi	r24, 0x5B	; 91
+ 2e4:	90 e0       	ldi	r25, 0x00	; 0
+ 2e6:	2b e5       	ldi	r18, 0x5B	; 91
+ 2e8:	30 e0       	ldi	r19, 0x00	; 0
+ 2ea:	f9 01       	movw	r30, r18
+ 2ec:	20 81       	ld	r18, Z
+ 2ee:	20 62       	ori	r18, 0x20	; 32
+ 2f0:	fc 01       	movw	r30, r24
+ 2f2:	20 83       	st	Z, r18
+		}
+	}
+}
+ 2f4:	0f 90       	pop	r0
+ 2f6:	df 91       	pop	r29
+ 2f8:	cf 91       	pop	r28
+ 2fa:	ff 91       	pop	r31
+ 2fc:	ef 91       	pop	r30
+ 2fe:	9f 91       	pop	r25
+ 300:	8f 91       	pop	r24
+ 302:	3f 91       	pop	r19
+ 304:	2f 91       	pop	r18
+ 306:	0f 90       	pop	r0
+ 308:	00 92 5f 00 	sts	0x005F, r0
+ 30c:	0f 90       	pop	r0
+ 30e:	1f 90       	pop	r1
+ 310:	18 95       	reti
+
+00000312 <__vector_5>:
+
+// Timer0 Overflow interrupt is used to trigger the sampling of signals on the USI ports.
+ISR(TIM0_OVF_vect)
+{
+ 312:	1f 92       	push	r1
+ 314:	0f 92       	push	r0
+ 316:	00 90 5f 00 	lds	r0, 0x005F
+ 31a:	0f 92       	push	r0
+ 31c:	11 24       	eor	r1, r1
+ 31e:	2f 93       	push	r18
+ 320:	3f 93       	push	r19
+ 322:	8f 93       	push	r24
+ 324:	9f 93       	push	r25
+ 326:	ef 93       	push	r30
+ 328:	ff 93       	push	r31
+ 32a:	cf 93       	push	r28
+ 32c:	df 93       	push	r29
+ 32e:	cd b7       	in	r28, 0x3d	; 61
+ 330:	dd 27       	eor	r29, r29
+    TCNT0 += TIMER0_SEED;                   // Reload the timer,
+ 332:	82 e5       	ldi	r24, 0x52	; 82
+ 334:	90 e0       	ldi	r25, 0x00	; 0
+ 336:	22 e5       	ldi	r18, 0x52	; 82
+ 338:	30 e0       	ldi	r19, 0x00	; 0
+ 33a:	f9 01       	movw	r30, r18
+ 33c:	20 81       	ld	r18, Z
+ 33e:	20 5c       	subi	r18, 0xC0	; 192
+ 340:	fc 01       	movw	r30, r24
+ 342:	20 83       	st	Z, r18
+                                            // current count is added for timing correction.
+}
+ 344:	df 91       	pop	r29
+ 346:	cf 91       	pop	r28
+ 348:	ff 91       	pop	r31
+ 34a:	ef 91       	pop	r30
+ 34c:	9f 91       	pop	r25
+ 34e:	8f 91       	pop	r24
+ 350:	3f 91       	pop	r19
+ 352:	2f 91       	pop	r18
+ 354:	0f 90       	pop	r0
+ 356:	00 92 5f 00 	sts	0x005F, r0
+ 35a:	0f 90       	pop	r0
+ 35c:	1f 90       	pop	r1
+ 35e:	18 95       	reti
+
+00000360 <_exit>:
+ 360:	f8 94       	cli
+
+00000362 <__stop_program>:
+ 362:	ff cf       	rjmp	.-2      	; 0x362 <__stop_program>

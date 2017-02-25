@@ -1,0 +1,322 @@
+
+bin\Debug\bt-snes-t13.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000152  00000000  00000000  000000b4  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00000152  00000206  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000003  00800060  00800060  00000206  2**0
+                  ALLOC
+  3 .fuse         00000002  00820000  00820000  00000206  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .comment      00000030  00000000  00000000  00000208  2**0
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000040  00000000  00000000  00000238  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000002c8  00000000  00000000  00000278  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000001ce  00000000  00000000  00000540  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   0000010d  00000000  00000000  0000070e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000074  00000000  00000000  0000081c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000141  00000000  00000000  00000890  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    000000d6  00000000  00000000  000009d1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000018  00000000  00000000  00000aa7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	10 c0       	rjmp	.+32     	; 0x22 <__ctors_end>
+   2:	1d c0       	rjmp	.+58     	; 0x3e <__bad_interrupt>
+   4:	1c c0       	rjmp	.+56     	; 0x3e <__bad_interrupt>
+   6:	1b c0       	rjmp	.+54     	; 0x3e <__bad_interrupt>
+   8:	1a c0       	rjmp	.+52     	; 0x3e <__bad_interrupt>
+   a:	19 c0       	rjmp	.+50     	; 0x3e <__bad_interrupt>
+   c:	28 c0       	rjmp	.+80     	; 0x5e <__vector_6>
+   e:	17 c0       	rjmp	.+46     	; 0x3e <__bad_interrupt>
+  10:	17 c0       	rjmp	.+46     	; 0x40 <__vector_8>
+  12:	15 c0       	rjmp	.+42     	; 0x3e <__bad_interrupt>
+
+00000014 <__trampolines_end>:
+  14:	51 45       	sbci	r21, 0x51	; 81
+  16:	54 5a       	subi	r21, 0xA4	; 164
+  18:	4f 50       	subi	r20, 0x0F	; 15
+  1a:	46 47       	sbci	r20, 0x76	; 118
+  1c:	48 59       	subi	r20, 0x98	; 152
+  1e:	58 43       	sbci	r21, 0x38	; 56
+	...
+
+00000022 <__ctors_end>:
+  22:	11 24       	eor	r1, r1
+  24:	1f be       	out	0x3f, r1	; 63
+  26:	cf e9       	ldi	r28, 0x9F	; 159
+  28:	cd bf       	out	0x3d, r28	; 61
+
+0000002a <__do_clear_bss>:
+  2a:	20 e0       	ldi	r18, 0x00	; 0
+  2c:	a0 e6       	ldi	r26, 0x60	; 96
+  2e:	b0 e0       	ldi	r27, 0x00	; 0
+  30:	01 c0       	rjmp	.+2      	; 0x34 <.do_clear_bss_start>
+
+00000032 <.do_clear_bss_loop>:
+  32:	1d 92       	st	X+, r1
+
+00000034 <.do_clear_bss_start>:
+  34:	a3 36       	cpi	r26, 0x63	; 99
+  36:	b2 07       	cpc	r27, r18
+  38:	e1 f7       	brne	.-8      	; 0x32 <.do_clear_bss_loop>
+  3a:	3d d0       	rcall	.+122    	; 0xb6 <main>
+  3c:	88 c0       	rjmp	.+272    	; 0x14e <_exit>
+
+0000003e <__bad_interrupt>:
+  3e:	e0 cf       	rjmp	.-64     	; 0x0 <__vectors>
+
+00000040 <__vector_8>:
+	sei();	// enable global interrupts that
+			// the transmission gets triggered
+}
+
+ISR(WDT_vect)			// wake up again
+{
+  40:	1f 92       	push	r1
+  42:	0f 92       	push	r0
+  44:	0f b6       	in	r0, 0x3f	; 63
+  46:	0f 92       	push	r0
+  48:	11 24       	eor	r1, r1
+  4a:	8f 93       	push	r24
+	WDTCR |= (1<<WDTIE);	// re-set interrupt bit
+  4c:	81 b5       	in	r24, 0x21	; 33
+  4e:	80 64       	ori	r24, 0x40	; 64
+  50:	81 bd       	out	0x21, r24	; 33
+							// otherwise we would reset
+							// the mcu next overflow
+}
+  52:	8f 91       	pop	r24
+  54:	0f 90       	pop	r0
+  56:	0f be       	out	0x3f, r0	; 63
+  58:	0f 90       	pop	r0
+  5a:	1f 90       	pop	r1
+  5c:	18 95       	reti
+
+0000005e <__vector_6>:
+
+ISR(TIM0_COMPA_vect)	// uart interrupt
+{
+  5e:	1f 92       	push	r1
+  60:	0f 92       	push	r0
+  62:	0f b6       	in	r0, 0x3f	; 63
+  64:	0f 92       	push	r0
+  66:	11 24       	eor	r1, r1
+  68:	2f 93       	push	r18
+  6a:	3f 93       	push	r19
+  6c:	8f 93       	push	r24
+  6e:	9f 93       	push	r25
+	uint8_t	 sreg	= SREG;
+  70:	3f b7       	in	r19, 0x3f	; 63
+	uint16_t data	= outframe;	// copy outframe
+  72:	80 91 61 00 	lds	r24, 0x0061
+  76:	90 91 62 00 	lds	r25, 0x0062
+
+	OCR0A		   += VAL_OSC;	// set next overflow target
+  7a:	26 b7       	in	r18, 0x36	; 54
+  7c:	2d 5a       	subi	r18, 0xAD	; 173
+  7e:	26 bf       	out	0x36, r18	; 54
+
+	if(data & 1)	UART_TX_PORT |=  UART_TX;	// write bit to port
+  80:	80 ff       	sbrs	r24, 0
+  82:	02 c0       	rjmp	.+4      	; 0x88 <__vector_6+0x2a>
+  84:	c3 9a       	sbi	0x18, 3	; 24
+  86:	01 c0       	rjmp	.+2      	; 0x8a <__vector_6+0x2c>
+	else			UART_TX_PORT &= ~UART_TX;
+  88:	c3 98       	cbi	0x18, 3	; 24
+
+	if(1 == data)   TIMSK0 &= ~(1<<OCIE0A);		// if we're done with transmission
+  8a:	81 30       	cpi	r24, 0x01	; 1
+  8c:	91 05       	cpc	r25, r1
+  8e:	19 f4       	brne	.+6      	; 0x96 <__vector_6+0x38>
+  90:	29 b7       	in	r18, 0x39	; 57
+  92:	2b 7f       	andi	r18, 0xFB	; 251
+  94:	29 bf       	out	0x39, r18	; 57
+												// disable compm. interrput
+
+	outframe = data >> 1;	// shift data and write it back to outframe
+  96:	96 95       	lsr	r25
+  98:	87 95       	ror	r24
+  9a:	90 93 62 00 	sts	0x0062, r25
+  9e:	80 93 61 00 	sts	0x0061, r24
+	SREG = sreg;
+  a2:	3f bf       	out	0x3f, r19	; 63
+}
+  a4:	9f 91       	pop	r25
+  a6:	8f 91       	pop	r24
+  a8:	3f 91       	pop	r19
+  aa:	2f 91       	pop	r18
+  ac:	0f 90       	pop	r0
+  ae:	0f be       	out	0x3f, r0	; 63
+  b0:	0f 90       	pop	r0
+  b2:	1f 90       	pop	r1
+  b4:	18 95       	reti
+
+000000b6 <main>:
+static void init_uart(void);
+static uint16_t check_12_buttons(void);
+
+int main(void)
+{
+	OSCCAL = 189;		// 11.52 MHz calibration
+  b6:	8d eb       	ldi	r24, 0xBD	; 189
+  b8:	81 bf       	out	0x31, r24	; 49
+	CTRL_PORT |=  CTRL_DAT;					// set pullups for DAT
+}
+
+void init_uart(void)
+{
+	uint8_t sreg = SREG;
+  ba:	9f b7       	in	r25, 0x3f	; 63
+
+	cli();
+  bc:	f8 94       	cli
+
+	OCR0A  = VAL_OSC;			// preset 1st overflow val
+  be:	83 e5       	ldi	r24, 0x53	; 83
+  c0:	86 bf       	out	0x36, r24	; 54
+
+	//TCCR0A = (1<<WGM01);		// normal mode instead of CTC
+	TCCR0B = (1<<CS00);
+  c2:	81 e0       	ldi	r24, 0x01	; 1
+  c4:	83 bf       	out	0x33, r24	; 51
+
+	TIMSK0 &= ~(1<<OCIE0A);		// turn compare match interrupt off
+  c6:	89 b7       	in	r24, 0x39	; 57
+  c8:	8b 7f       	andi	r24, 0xFB	; 251
+  ca:	89 bf       	out	0x39, r24	; 57
+	TIFR0   =  (1<<OCF0A);		// set compare match flag (to be on the safe side)
+  cc:	84 e0       	ldi	r24, 0x04	; 4
+  ce:	88 bf       	out	0x38, r24	; 56
+
+	UART_TX_PORT |= UART_TX;	// turn pullup on
+  d0:	c3 9a       	sbi	0x18, 3	; 24
+	UART_TX_DDR  |= UART_TX;	// set as output
+  d2:	bb 9a       	sbi	0x17, 3	; 23
+
+	outframe = 0;
+  d4:	10 92 62 00 	sts	0x0062, r1
+  d8:	10 92 61 00 	sts	0x0061, r1
+	SREG = sreg;
+  dc:	9f bf       	out	0x3f, r25	; 63
+	DDRB = ddrb;			// restore DDRB
+}
+
+void init_sleep(void)
+{
+	wdt_enable(WDTO_15MS);	// set wdt timeout to time_out (15ms)
+  de:	28 e0       	ldi	r18, 0x08	; 8
+  e0:	88 e1       	ldi	r24, 0x18	; 24
+  e2:	90 e0       	ldi	r25, 0x00	; 0
+  e4:	0f b6       	in	r0, 0x3f	; 63
+  e6:	f8 94       	cli
+  e8:	a8 95       	wdr
+  ea:	81 bd       	out	0x21, r24	; 33
+  ec:	0f be       	out	0x3f, r0	; 63
+  ee:	21 bd       	out	0x21, r18	; 33
+	WDTCR |= (1<<WDTIE);	// interrupt instead of reset
+  f0:	81 b5       	in	r24, 0x21	; 33
+  f2:	80 64       	ori	r24, 0x40	; 64
+  f4:	81 bd       	out	0x21, r24	; 33
+	sei();					// enable global interrupts
+  f6:	78 94       	sei
+		cli();
+	}
+	while (outframe);
+
+	// frame = [*P76543210S]  S=start=0, P=stop=1, *=endmark=1
+	outframe = (3<<9) | (c<<1);
+  f8:	80 e9       	ldi	r24, 0x90	; 144
+  fa:	96 e0       	ldi	r25, 0x06	; 6
+
+	TIMSK0 |= (1<<OCIE0A);	// turn interrupt on for sending
+	TIFR0   = (1<<OCF0A);	// as well as interrupt flag
+  fc:	44 e0       	ldi	r20, 0x04	; 4
+
+void uart_tx(char c)
+{
+	do	// wait until last outframe is sent
+	{
+		sei();
+  fe:	78 94       	sei
+		nop();
+ 100:	00 00       	nop
+		cli();
+ 102:	f8 94       	cli
+	}
+	while (outframe);
+ 104:	20 91 61 00 	lds	r18, 0x0061
+ 108:	30 91 62 00 	lds	r19, 0x0062
+ 10c:	23 2b       	or	r18, r19
+ 10e:	b9 f7       	brne	.-18     	; 0xfe <main+0x48>
+
+	// frame = [*P76543210S]  S=start=0, P=stop=1, *=endmark=1
+	outframe = (3<<9) | (c<<1);
+ 110:	90 93 62 00 	sts	0x0062, r25
+ 114:	80 93 61 00 	sts	0x0061, r24
+
+	TIMSK0 |= (1<<OCIE0A);	// turn interrupt on for sending
+ 118:	29 b7       	in	r18, 0x39	; 57
+ 11a:	24 60       	ori	r18, 0x04	; 4
+ 11c:	29 bf       	out	0x39, r18	; 57
+	TIFR0   = (1<<OCF0A);	// as well as interrupt flag
+ 11e:	48 bf       	out	0x38, r20	; 56
+
+	sei();	// enable global interrupts that
+ 120:	78 94       	sei
+	return read_buttons;
+}
+
+void sleep(uint8_t mode)
+{
+	while(outframe);		// wait for transmission
+ 122:	20 91 61 00 	lds	r18, 0x0061
+ 126:	30 91 62 00 	lds	r19, 0x0062
+ 12a:	23 2b       	or	r18, r19
+ 12c:	d1 f7       	brne	.-12     	; 0x122 <main+0x6c>
+
+	uint8_t ddrb = DDRB;	// backup actual DRRB
+ 12e:	37 b3       	in	r19, 0x17	; 23
+	DDRB = 0;				// set all to input, saves power
+ 130:	17 ba       	out	0x17, r1	; 23
+
+	set_sleep_mode(mode);	// set sleep mode
+ 132:	25 b7       	in	r18, 0x35	; 53
+ 134:	27 7e       	andi	r18, 0xE7	; 231
+ 136:	20 61       	ori	r18, 0x10	; 16
+ 138:	25 bf       	out	0x35, r18	; 53
+	sleep_enable();			// enable sleep mode
+ 13a:	25 b7       	in	r18, 0x35	; 53
+ 13c:	20 62       	ori	r18, 0x20	; 32
+ 13e:	25 bf       	out	0x35, r18	; 53
+	sei();					// enable global interrupts to wake up
+ 140:	78 94       	sei
+	sleep_cpu();			// halt cpu
+ 142:	88 95       	sleep
+	// --------------------	// we wake up here again (wdt ISR)
+	sleep_disable();		// disable sleep
+ 144:	25 b7       	in	r18, 0x35	; 53
+ 146:	2f 7d       	andi	r18, 0xDF	; 223
+ 148:	25 bf       	out	0x35, r18	; 53
+
+	DDRB = ddrb;			// restore DDRB
+ 14a:	37 bb       	out	0x17, r19	; 23
+ 14c:	d8 cf       	rjmp	.-80     	; 0xfe <main+0x48>
+
+0000014e <_exit>:
+ 14e:	f8 94       	cli
+
+00000150 <__stop_program>:
+ 150:	ff cf       	rjmp	.-2      	; 0x150 <__stop_program>

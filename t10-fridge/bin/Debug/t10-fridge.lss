@@ -1,0 +1,362 @@
+
+bin\Debug\t10-fridge.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000198  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800040  00000198  0000022c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000002  00800040  00800040  0000022c  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000022c  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  0000025c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000018b  00000000  00000000  00000284  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000000eb  00000000  00000000  0000040f  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000000a5  00000000  00000000  000004fa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000d8  00000000  00000000  000005a0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000000f6  00000000  00000000  00000678  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000000d3  00000000  00000000  0000076e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  00000841  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0a c0       	rjmp	.+20     	; 0x16 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	4f c0       	rjmp	.+158    	; 0xaa <__vector_5>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	7e c0       	rjmp	.+252    	; 0x10e <__vector_8>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+
+00000016 <__ctors_end>:
+  16:	11 27       	eor	r17, r17
+  18:	1f bf       	out	0x3f, r17	; 63
+  1a:	cf e5       	ldi	r28, 0x5F	; 95
+  1c:	d0 e0       	ldi	r29, 0x00	; 0
+  1e:	de bf       	out	0x3e, r29	; 62
+  20:	cd bf       	out	0x3d, r28	; 61
+
+00000022 <__do_clear_bss>:
+  22:	20 e0       	ldi	r18, 0x00	; 0
+  24:	a0 e4       	ldi	r26, 0x40	; 64
+  26:	b0 e0       	ldi	r27, 0x00	; 0
+  28:	01 c0       	rjmp	.+2      	; 0x2c <.do_clear_bss_start>
+
+0000002a <.do_clear_bss_loop>:
+  2a:	1d 93       	st	X+, r17
+
+0000002c <.do_clear_bss_start>:
+  2c:	a2 34       	cpi	r26, 0x42	; 66
+  2e:	b2 07       	cpc	r27, r18
+  30:	e1 f7       	brne	.-8      	; 0x2a <.do_clear_bss_loop>
+  32:	7f d0       	rcall	.+254    	; 0x132 <main>
+  34:	af c0       	rjmp	.+350    	; 0x194 <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <wdt_off>:
+	}
+}
+
+void wdt_off(void)
+{
+	cli();
+  38:	f8 94       	cli
+	wdt_reset();
+  3a:	a8 95       	wdr
+	RSTFLR	&=	~(1<<WDRF);
+  3c:	4b b7       	in	r20, 0x3b	; 59
+  3e:	47 7f       	andi	r20, 0xF7	; 247
+  40:	4b bf       	out	0x3b, r20	; 59
+	CCP		 =	0xD8;
+  42:	48 ed       	ldi	r20, 0xD8	; 216
+  44:	4c bf       	out	0x3c, r20	; 60
+	WDTCSR	 =	(0<<WDE);
+  46:	11 bf       	out	0x31, r17	; 49
+	sei();
+  48:	78 94       	sei
+  4a:	08 95       	ret
+
+0000004c <init_timer>:
+}
+
+void init_timer(void)
+{
+	OCR0A	 =	BUZ_INTV;
+  4c:	40 e4       	ldi	r20, 0x40	; 64
+  4e:	5f e1       	ldi	r21, 0x1F	; 31
+  50:	57 bd       	out	0x27, r21	; 39
+  52:	46 bd       	out	0x26, r20	; 38
+	TCCR0B	|=	(1<<CS00);		// turn timer on
+  54:	4d b5       	in	r20, 0x2d	; 45
+  56:	41 60       	ori	r20, 0x01	; 1
+  58:	4d bd       	out	0x2d, r20	; 45
+	TIMSK0	|=	(1<<OCIE0A);	// enable comp match intr.
+  5a:	4b b5       	in	r20, 0x2b	; 43
+  5c:	42 60       	ori	r20, 0x02	; 2
+  5e:	4b bd       	out	0x2b, r20	; 43
+  60:	08 95       	ret
+
+00000062 <init_sleep>:
+}
+
+void init_sleep(void)
+{
+	// init sleep
+	wdt_enable(WDTO_1S);	// set wdt timeout to time_out (2s)
+  62:	5e e0       	ldi	r21, 0x0E	; 14
+  64:	48 ed       	ldi	r20, 0xD8	; 216
+  66:	0f b7       	in	r16, 0x3f	; 63
+  68:	f8 94       	cli
+  6a:	a8 95       	wdr
+  6c:	4c bf       	out	0x3c, r20	; 60
+  6e:	51 bf       	out	0x31, r21	; 49
+  70:	0f bf       	out	0x3f, r16	; 63
+	WDTCSR |= (1<<WDIE);	// interrupt instead of reset
+  72:	41 b7       	in	r20, 0x31	; 49
+  74:	40 64       	ori	r20, 0x40	; 64
+  76:	41 bf       	out	0x31, r20	; 49
+	sei();					// enable global interrupts
+  78:	78 94       	sei
+  7a:	08 95       	ret
+
+0000007c <init_port>:
+}
+
+void init_port(void)
+{
+	// init ports
+	PORTB	|= BUZ | SWT;	// pullups for BUZ,SWT
+  7c:	42 b1       	in	r20, 0x02	; 2
+  7e:	43 60       	ori	r20, 0x03	; 3
+  80:	42 b9       	out	0x02, r20	; 2
+	DDRB	|= BUZ | LED;	// BUZ,LED to output
+  82:	41 b1       	in	r20, 0x01	; 1
+  84:	45 60       	ori	r20, 0x05	; 5
+  86:	41 b9       	out	0x01, r20	; 1
+  88:	08 95       	ret
+
+0000008a <sleep>:
+}
+
+void sleep(void)
+{
+	uint8_t ddrb = DDRB;					// backup actual DRRB
+  8a:	51 b1       	in	r21, 0x01	; 1
+	DDRB = 0;								// set all to input, saves power
+  8c:	11 b9       	out	0x01, r17	; 1
+
+	set_sleep_mode(SLEEP_MODE_PWR_DOWN);	// set sleep mode
+  8e:	4a b7       	in	r20, 0x3a	; 58
+  90:	41 7f       	andi	r20, 0xF1	; 241
+  92:	44 60       	ori	r20, 0x04	; 4
+  94:	4a bf       	out	0x3a, r20	; 58
+	sleep_enable();							// enable sleep mode
+  96:	4a b7       	in	r20, 0x3a	; 58
+  98:	41 60       	ori	r20, 0x01	; 1
+  9a:	4a bf       	out	0x3a, r20	; 58
+	sei();									// enable global interrupts to wake up
+  9c:	78 94       	sei
+	sleep_cpu();							// halt cpu
+  9e:	88 95       	sleep
+	// -----------------------------------	// we wake up here again (wdt ISR)
+	sleep_disable();						// disable sleep
+  a0:	4a b7       	in	r20, 0x3a	; 58
+  a2:	4e 7f       	andi	r20, 0xFE	; 254
+  a4:	4a bf       	out	0x3a, r20	; 58
+
+	DDRB = ddrb;							// restore DDRB
+  a6:	51 b9       	out	0x01, r21	; 1
+  a8:	08 95       	ret
+
+000000aa <__vector_5>:
+}
+
+ISR(TIM0_COMPA_vect)	// noise = 1000Hz
+{
+  aa:	1f 93       	push	r17
+  ac:	0f 93       	push	r16
+  ae:	0f b7       	in	r16, 0x3f	; 63
+  b0:	0f 93       	push	r16
+  b2:	10 e0       	ldi	r17, 0x00	; 0
+  b4:	4f 93       	push	r20
+  b6:	5f 93       	push	r21
+  b8:	6f 93       	push	r22
+  ba:	7f 93       	push	r23
+  bc:	8f 93       	push	r24
+  be:	9f 93       	push	r25
+  c0:	af 93       	push	r26
+  c2:	bf 93       	push	r27
+	OCR0A	+=	BUZ_INTV;
+  c4:	46 b5       	in	r20, 0x26	; 38
+  c6:	57 b5       	in	r21, 0x27	; 39
+  c8:	40 5c       	subi	r20, 0xC0	; 192
+  ca:	50 4e       	sbci	r21, 0xE0	; 224
+  cc:	57 bd       	out	0x27, r21	; 39
+  ce:	46 bd       	out	0x26, r20	; 38
+
+	// led = 4Hz
+	static uint8_t led_intv = 0;
+	led_intv = (led_intv + 1) % 251;
+  d0:	81 a1       	lds	r24, 0x41
+  d2:	90 e0       	ldi	r25, 0x00	; 0
+  d4:	8f 5f       	subi	r24, 0xFF	; 255
+  d6:	9f 4f       	sbci	r25, 0xFF	; 255
+  d8:	6b ef       	ldi	r22, 0xFB	; 251
+  da:	70 e0       	ldi	r23, 0x00	; 0
+  dc:	32 d0       	rcall	.+100    	; 0x142 <__divmodhi4>
+  de:	81 a9       	sts	0x41, r24
+	if(led_intv == 250)	PORTB ^= LED;	// toggle led
+  e0:	8a 3f       	cpi	r24, 0xFA	; 250
+  e2:	21 f4       	brne	.+8      	; 0xec <__vector_5+0x42>
+  e4:	42 b1       	in	r20, 0x02	; 2
+  e6:	54 e0       	ldi	r21, 0x04	; 4
+  e8:	45 27       	eor	r20, r21
+  ea:	42 b9       	out	0x02, r20	; 2
+
+	// buz = 1000Hz
+	PORTB ^= BUZ;
+  ec:	42 b1       	in	r20, 0x02	; 2
+  ee:	51 e0       	ldi	r21, 0x01	; 1
+  f0:	45 27       	eor	r20, r21
+  f2:	42 b9       	out	0x02, r20	; 2
+}
+  f4:	bf 91       	pop	r27
+  f6:	af 91       	pop	r26
+  f8:	9f 91       	pop	r25
+  fa:	8f 91       	pop	r24
+  fc:	7f 91       	pop	r23
+  fe:	6f 91       	pop	r22
+ 100:	5f 91       	pop	r21
+ 102:	4f 91       	pop	r20
+ 104:	0f 91       	pop	r16
+ 106:	0f bf       	out	0x3f, r16	; 63
+ 108:	0f 91       	pop	r16
+ 10a:	1f 91       	pop	r17
+ 10c:	18 95       	reti
+
+0000010e <__vector_8>:
+
+ISR(WDT_vect)
+{
+ 10e:	1f 93       	push	r17
+ 110:	0f 93       	push	r16
+ 112:	0f b7       	in	r16, 0x3f	; 63
+ 114:	0f 93       	push	r16
+ 116:	10 e0       	ldi	r17, 0x00	; 0
+ 118:	4f 93       	push	r20
+	WDTCSR |= (1<<WDIE);	// re-set WDIE bit that we dont
+ 11a:	41 b7       	in	r20, 0x31	; 49
+ 11c:	40 64       	ori	r20, 0x40	; 64
+ 11e:	41 bf       	out	0x31, r20	; 49
+							// reset MCU next overflow
+	actl_dly_secs++;		// count up delay timer 1/s
+ 120:	40 a1       	lds	r20, 0x40
+ 122:	4f 5f       	subi	r20, 0xFF	; 255
+ 124:	40 a9       	sts	0x40, r20
+}
+ 126:	4f 91       	pop	r20
+ 128:	0f 91       	pop	r16
+ 12a:	0f bf       	out	0x3f, r16	; 63
+ 12c:	0f 91       	pop	r16
+ 12e:	1f 91       	pop	r17
+ 130:	18 95       	reti
+
+00000132 <main>:
+void init_port(void);
+void sleep(void);
+
+int main(void)
+{
+	init_port();
+ 132:	a4 df       	rcall	.-184    	; 0x7c <init_port>
+	init_sleep();
+ 134:	96 df       	rcall	.-212    	; 0x62 <init_sleep>
+	init_timer();
+ 136:	8a df       	rcall	.-236    	; 0x4c <init_timer>
+
+    while(1)
+	{
+		if((actl_dly_secs > DLY) && !(PINB & LED))
+ 138:	40 a1       	lds	r20, 0x40
+ 13a:	41 3f       	cpi	r20, 0xF1	; 241
+ 13c:	e8 f3       	brcs	.-6      	; 0x138 <main+0x6>
+ 13e:	40 b1       	in	r20, 0x00	; 0
+ 140:	fb cf       	rjmp	.-10     	; 0x138 <main+0x6>
+
+00000142 <__divmodhi4>:
+ 142:	97 fb       	bst	r25, 7
+ 144:	07 2f       	mov	r16, r23
+ 146:	16 f4       	brtc	.+4      	; 0x14c <__divmodhi4+0xa>
+ 148:	00 95       	com	r16
+ 14a:	06 d0       	rcall	.+12     	; 0x158 <__divmodhi4_neg1>
+ 14c:	77 fd       	sbrc	r23, 7
+ 14e:	08 d0       	rcall	.+16     	; 0x160 <__divmodhi4_neg2>
+ 150:	0b d0       	rcall	.+22     	; 0x168 <__udivmodhi4>
+ 152:	07 fd       	sbrc	r16, 7
+ 154:	05 d0       	rcall	.+10     	; 0x160 <__divmodhi4_neg2>
+ 156:	3e f4       	brtc	.+14     	; 0x166 <__divmodhi4_exit>
+
+00000158 <__divmodhi4_neg1>:
+ 158:	90 95       	com	r25
+ 15a:	81 95       	neg	r24
+ 15c:	9f 4f       	sbci	r25, 0xFF	; 255
+ 15e:	08 95       	ret
+
+00000160 <__divmodhi4_neg2>:
+ 160:	70 95       	com	r23
+ 162:	61 95       	neg	r22
+ 164:	7f 4f       	sbci	r23, 0xFF	; 255
+
+00000166 <__divmodhi4_exit>:
+ 166:	08 95       	ret
+
+00000168 <__udivmodhi4>:
+ 168:	aa 1b       	sub	r26, r26
+ 16a:	bb 1b       	sub	r27, r27
+ 16c:	51 e1       	ldi	r21, 0x11	; 17
+ 16e:	07 c0       	rjmp	.+14     	; 0x17e <__udivmodhi4_ep>
+
+00000170 <__udivmodhi4_loop>:
+ 170:	aa 1f       	adc	r26, r26
+ 172:	bb 1f       	adc	r27, r27
+ 174:	a6 17       	cp	r26, r22
+ 176:	b7 07       	cpc	r27, r23
+ 178:	10 f0       	brcs	.+4      	; 0x17e <__udivmodhi4_ep>
+ 17a:	a6 1b       	sub	r26, r22
+ 17c:	b7 0b       	sbc	r27, r23
+
+0000017e <__udivmodhi4_ep>:
+ 17e:	88 1f       	adc	r24, r24
+ 180:	99 1f       	adc	r25, r25
+ 182:	5a 95       	dec	r21
+ 184:	a9 f7       	brne	.-22     	; 0x170 <__udivmodhi4_loop>
+ 186:	80 95       	com	r24
+ 188:	90 95       	com	r25
+ 18a:	68 2f       	mov	r22, r24
+ 18c:	79 2f       	mov	r23, r25
+ 18e:	8a 2f       	mov	r24, r26
+ 190:	9b 2f       	mov	r25, r27
+ 192:	08 95       	ret
+
+00000194 <_exit>:
+ 194:	f8 94       	cli
+
+00000196 <__stop_program>:
+ 196:	ff cf       	rjmp	.-2      	; 0x196 <__stop_program>

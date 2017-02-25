@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1394791701 source:c:\users\lenny\documents\atmel\test\main.c
+	<avr/io.h>
+	<util/delay.h>
+

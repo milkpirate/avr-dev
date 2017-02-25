@@ -1,0 +1,30 @@
+
+ DESCRIPTION
+
+ This application describes how to make a half duplex software UART
+ using the 8-bit Timer/Counter0 and the External Interrupt0 (ATmega128).
+
+ As a lot of control applications communicate in one direction at a time
+ only, a half duplex UART will limit the usage of MCU resources.
+
+ The constants D and N determine the data rate. D selects the frequency
+ divider as described in the T/C Prescaler in the AVR datasheet (the T/C
+ prescaling factor). The following expression yields the data rate:
+
+		 	 CLK
+	 BAUD = ----- ;   (CLK = quartz frequency)
+		 	 N*D
+
+ The UART uses PD0 as receive pin because it must be an external interrupt.
+ The transmit-pin is PD4 in this application, but it can be any other pin.
+
+ Since the UART is half duplex, it can either send or receive data. It can't
+ do both simultaneously. When idle it will automatically receive incoming
+ data into the RX buffer, but if it is transmitting data while incoming data
+ arrives, it will ignore it.
+
+ Interrupt Usage :	External Interrupt0,
+			 		Timer/Counter0 overflow interrupt.
+
+ Remark: The constants 80 and 56 (inside the "defs.h" file), used to adjust
+ 		 the bit lengths, are achieved by using an oscilloscope.

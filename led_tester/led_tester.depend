@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1477217692 source:c:\users\lenny\documents\elektronik\atmel\led_tester\fuse.c
+	<avr/io.h>
+
+1478188885 source:c:\users\lenny\documents\elektronik\atmel\led_tester\lcd\lcd_routines.c
+	<avr/io.h>
+	<avr/pgmspace.h>
+	"lcd_routines.h"
+	<util/delay.h>
+
+1478188222 c:\users\lenny\documents\elektronik\atmel\led_tester\lcd\lcd_routines.h
+
+1478190677 source:c:\users\lenny\documents\elektronik\atmel\led_tester\main.c
+	<avr/io.h>
+	<avr/pgmspace.h>
+	<util/delay.h>
+	<lcd_routines.h>
+	<stdio.h>
+	<stdfix.h>
+

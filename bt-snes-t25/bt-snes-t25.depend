@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1416661501 source:c:\users\lenny\documents\atmel\bt-snes-t25\fuse.c
+	<avr/io.h>
+
+1423696826 source:c:\users\lenny\documents\atmel\bt-snes-t25\main.c
+	<avr/io.h>
+	<avr/wdt.h>
+	<avr/sleep.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+

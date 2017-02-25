@@ -1,0 +1,180 @@
+<h2>Remote flower watering and monitoring with the tuxgraphics avr ethernet board</h2>
+See subdirectory <a href="hardware/schematic.htm">hardware</a> for
+more details on how to connect the relay, the precision rectifer and the sensors. The software runs on atmega168/328.
+<br>
+<br>
+ All parts needed to build this AVR ethernet solution can be ordered from 
+ <br>
+ <a href="http://shop.tuxgraphics.org/">http://shop.tuxgraphics.org/</a>
+<hr>
+<pre>
+
+!! READ THIS FIRST !!
+---------------------
+The mac address has to be unique within your own network.
+If you connect more than one board to the same LAN
+you will need to change the mac address to something else.
+Edit the file main.c and change the last digit in this line:
+
+static uint8_t mymac[6] = {0x54,0x55,0x58,0x10,0x00,0x29};
+
+It does not matter to what value you change it as long as
+there is no other ethernet board with the same value on your
+lan. Your neighbor could re-use the same address.
+
+Check the file "Makefile" and make sure the MCU is set correctly:
+
+MCU=atmega168
+DUDECPUTYPE=m168
+or
+MCU=atmega328p
+DUDECPUTYPE=m328
+
+This software has a fixed IP address which is set at compile time in 
+file main.c:
+static uint8_t myip[4] = {10,0,0,29};
+
+myip must be a free address from the address range in your network.
+
+There is a range of private addresses (not routed on the public internet)
+which you can use:
+Netmask          Network Addresses
+255.0.0.0         10.0.0.0 - 10.255.255.255
+255.255.0.0       172.16.0.0 - 172.31.255.255
+255.255.255.0     192.168.0.0 - 192.168.255.255
+
+Example: you wlan router might have 192.168.1.1, your PC might have
+192.168.1.2. This means you could e.g use 192.168.1.10 and leave some
+room for more PCs. If you use DHCP then make sure that the address it not
+double allocated (exclude it from the DHCP range).
+
+You need an avr-gcc development environment in order to compile this.
+
+Setting a password
+The password is defined in main.c on this line:
+static char password[]="secret";
+
+To compile the software use the command:
+make
+
+Note: windows users may use and modify the supplied winmake.bat to setup the
+environment correctly.
+
+The command
+make load
+
+will execute the avrdude command to load the software.
+E.g something like: 
+   avrdude -p m168 -c stk500v2 -e -U flash:w:main.hex
+
+! Note: your programmer might interfere with the enc28j60! For the avrusb500
+! with 30cm cable you can normally leave the cable on. For all other programmers
+! it is however saver to remove the programmer cable and power down/up the device.
+! This is because the SPI interface is used for loading of the software and 
+! communication to the enc28j60.
+
+To see a list of all possible build targets run the command:
+make help
+
+Selecting the right clock source
+--------------------------------
+Tuxgraphics hardware sold as of march 2007 is prepared to use the clock
+signal from the enc28j60. To use this you need to change the 
+low fuse byte once from 0x62 to 0x60:
+avrdude -p m168 -c stk500v2 -u -v -U lfuse:w:0x60:m
+
+or just type in your Linux shell:
+make fuse
+
+After programming the fuse settings of atmega168 and atmega88 should be:
+ low fuse:  0x60
+ high fuse: 0xdf
+ ext. fuse: 0x01
+
+For the atmega328p the hfuse and efuse bytes look slightly different.
+The idea is however the same. Just change the lfuse from factory default
+to 0x60. The fuse settings of the atmega328 are after programming:
+ lfuse reads as 0x60
+ hfuse reads as 0xD9
+ efuse reads as 0x07
+
+details of the lfuse bits:
+  CKDIV8 = 0
+  CKOUT  = 1
+  SUT1   = 1
+  SUT0   = 0
+  CKSEL3 = 0
+  CKSEL2 = 0
+  CKSEL1 = 0
+  CKSEL0 = 0
+
+If you are unsure what the current fuse setting are on the atmega
+then you can read the fuse settings with a command like: 
+          avrdude -p m168 -c stk500v2 -v -q
+The result should be this (default factory settings for atmega168):
+          avrdude: safemode: lfuse reads as 62
+          avrdude: safemode: hfuse reads as DF
+          avrdude: safemode: efuse reads as 1
+
+The result should be this (default factory settings for atmega328p):
+          avrdude: safemode: lfuse reads as 62
+          avrdude: safemode: hfuse reads as D9
+          avrdude: safemode: efuse reads as 7
+
+Compiling on non-Unix systems
+-----------------------------
+Please use the provided Makefile !!!
+
+It will also work under Windows except for the loading
+of the software. That is compiling will work but not
+"make load". Use then whatever tools and commands to download
+the resuting main.hex file into the microcontroller
+
+Take also a look at the supplied winmake.bat file. This bat script
+might be needed to set the environment correctly.
+
+Using the web server
+--------------------
+Point your web browser to
+http://10.0.0.29   (or what ever IP address you have given your hardware)
+
+You should see a page like this:
+
+------------------------------------------
+[water] [graph] [levels] [refresh]
+
+Sensors
+
+Temperature:26.9'C [80'F]
+Humi level: 115 [normal]
+
+------------------------------------------
+(C) tuxgraphics
+
+The temperature and humidity history graphs use javascript. You need a 
+javascript capable web browser to see them. Even web browsers inside 
+mobile phone are these days javascript capable. It should not be a
+problem. The javascript code is well written and tested.
+
+Authors/Copyright
+-----------------
+Most of the software was written by Guido Socher.
+The ds18x20 and onewire code is taken from 
+http://www.siwawi.arubi.uni-kl.de/avr_projects/tempsensor/index.html
+It was written by Martin Thomas and based on code of Peter Dannegger,
+Colin O'Flynn and others.
+
+Guido Socher modified the ds18x20 and one-wire code to fit to this
+application.
+
+The enc28j60 driver is based on code from Pascal Stang and updated
+by Guido Socher.
+
+All code is copyright GPL V2.
+
+Revision history
+----------------
+2009-08-25: version 0.6 -- first public version
+                            
+</pre>
+vim:sw=8:ts=8:si:et

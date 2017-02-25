@@ -1,0 +1,38 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.57</VERSION>
+ <DEVICE>"ATtiny10"</DEVICE>
+ <WORKING_DIR>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\tn10def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\Debug/t10-test-asm.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>t10-test-asm.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>t10-test-asm.map</FILE>
+  <FILE>t10-test-asm.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <reset><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>79</LINE></reset>
+  <isr_comp_a><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>256</LINE></isr_comp_a>
+  <isr_wdt><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>248</LINE></isr_wdt>
+  <main><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>131</LINE></main>
+  <get_button_states><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>153</LINE></get_button_states>
+  <go_sleep><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>233</LINE></go_sleep>
+  <tx_letter><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>204</LINE></tx_letter>
+  <tx_buttons><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>176</LINE></tx_buttons>
+  <get_btn_loop><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>162</LINE></get_btn_loop>
+  <letters><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>294</LINE></letters>
+  <btn_trnas_loop><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>185</LINE></btn_trnas_loop>
+  <next_btn><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>194</LINE></next_btn>
+  <tx_comma><FILE>C:\Users\Lenny\Documents\Atmel\t10-test-asm\t10-test-asm\t10-test-asm.asm</FILE><LINE>202</LINE></tx_comma>
+ </LABELS>
+</ASSEMBLER_INFO>

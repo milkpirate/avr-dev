@@ -1,0 +1,4 @@
+# depslib dependency file v1.0
+1416759923 source:c:\users\lenny\documents\atmel\test\main.c
+	<avr/io.h>
+

@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1423697203 source:c:\users\lenny\documents\atmel\bt-snes-t13\fuse.c
+	<avr/io.h>
+
+1423700803 source:c:\users\lenny\documents\elektronik\atmel\bt-snes-t13\fuse.c
+	<avr/io.h>
+
+1473978112 source:c:\users\lenny\documents\elektronik\atmel\bt-snes-t13\main.c
+	<avr/io.h>
+	<avr/wdt.h>
+	<avr/sleep.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+

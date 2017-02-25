@@ -1,0 +1,64 @@
+
+bin\Release\test-t25.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000004a  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  0000004a  000000de  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .fuse         00000003  00820000  00820000  000000de  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .comment      00000030  00000000  00000000  000000e1  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+  1a:	07 c0       	rjmp	.+14     	; 0x2a <__bad_interrupt>
+  1c:	06 c0       	rjmp	.+12     	; 0x2a <__bad_interrupt>
+
+0000001e <__ctors_end>:
+  1e:	11 24       	eor	r1, r1
+  20:	1f be       	out	0x3f, r1	; 63
+  22:	cf ed       	ldi	r28, 0xDF	; 223
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	0e c0       	rjmp	.+28     	; 0x46 <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+  2c:	8c 9a       	sbi	0x11, 4	; 17
+  2e:	8b 9a       	sbi	0x11, 3	; 17
+  30:	8d 9a       	sbi	0x11, 5	; 17
+  32:	85 e0       	ldi	r24, 0x05	; 5
+  34:	82 bb       	out	0x12, r24	; 18
+  36:	95 9a       	sbi	0x12, 5	; 18
+  38:	8c 9a       	sbi	0x11, 4	; 17
+  3a:	81 b3       	in	r24, 0x11	; 17
+  3c:	80 95       	com	r24
+  3e:	81 bb       	out	0x11, r24	; 17
+  40:	81 b3       	in	r24, 0x11	; 17
+  42:	88 bb       	out	0x18, r24	; 24
+  44:	fa cf       	rjmp	.-12     	; 0x3a <main+0xe>
+
+00000046 <_exit>:
+  46:	f8 94       	cli
+
+00000048 <__stop_program>:
+  48:	ff cf       	rjmp	.-2      	; 0x48 <__stop_program>

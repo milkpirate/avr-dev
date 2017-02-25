@@ -1,0 +1,44 @@
+# depslib dependency file v1.0
+1477433999 source:c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\fuse.c
+	<avr/io.h>
+
+1478123685 source:c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\main.c
+	<avr/io.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+	"usi_slave_eeprom.h"
+
+1477512236 c:\users\lenny\documents\elektronik\atmel\lib\ownlib\ownlib.h
+
+1477769784 c:\users\lenny\documents\elektronik\atmel\lib\own\ownlib.h
+
+1477769582 source:c:\users\lenny\documents\elektronik\atmel\lib\own\ownlib.c
+	<stdint.h>
+	<own/ownlib.h>
+	<avr/interrupt.h>
+
+1477523353 source:c:\users\lenny\documents\elektronik\atmel\lib\usi\usi_twi_slave.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	"usi_twi_slave.h"
+
+1477522326 c:\users\lenny\documents\elektronik\atmel\lib\usi\usi_twi_slave.h
+	<stdbool.h>
+
+1477524197 source:c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\usi_twi_slave.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	"usi_twi_slave.h"
+
+1477524197 c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\usi_twi_slave.h
+	<stdbool.h>
+
+1478191322 c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\usi_slave_eeprom.h
+	<stdbool.h>
+
+1478191275 source:c:\users\lenny\documents\elektronik\atmel\logic_i2c_replacement_t25\usi_slave_eeprom.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	"usi_slave_eeprom.h"
+

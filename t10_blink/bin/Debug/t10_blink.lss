@@ -1,0 +1,95 @@
+
+bin\Debug\t10_blink.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000004e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800040  0000004e  000000c2  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000000c2  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000020  00000000  00000000  000000f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000010a  00000000  00000000  00000112  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000000c2  00000000  00000000  0000021c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000000a4  00000000  00000000  000002de  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000024  00000000  00000000  00000384  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000000dd  00000000  00000000  000003a8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000010  00000000  00000000  00000485  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0a c0       	rjmp	.+20     	; 0x16 <__ctors_end>
+   2:	11 c0       	rjmp	.+34     	; 0x26 <__bad_interrupt>
+   4:	10 c0       	rjmp	.+32     	; 0x26 <__bad_interrupt>
+   6:	0f c0       	rjmp	.+30     	; 0x26 <__bad_interrupt>
+   8:	0e c0       	rjmp	.+28     	; 0x26 <__bad_interrupt>
+   a:	0d c0       	rjmp	.+26     	; 0x26 <__bad_interrupt>
+   c:	0c c0       	rjmp	.+24     	; 0x26 <__bad_interrupt>
+   e:	0b c0       	rjmp	.+22     	; 0x26 <__bad_interrupt>
+  10:	0a c0       	rjmp	.+20     	; 0x26 <__bad_interrupt>
+  12:	09 c0       	rjmp	.+18     	; 0x26 <__bad_interrupt>
+  14:	08 c0       	rjmp	.+16     	; 0x26 <__bad_interrupt>
+
+00000016 <__ctors_end>:
+  16:	11 27       	eor	r17, r17
+  18:	1f bf       	out	0x3f, r17	; 63
+  1a:	cf e5       	ldi	r28, 0x5F	; 95
+  1c:	d0 e0       	ldi	r29, 0x00	; 0
+  1e:	de bf       	out	0x3e, r29	; 62
+  20:	cd bf       	out	0x3d, r28	; 61
+  22:	02 d0       	rcall	.+4      	; 0x28 <main>
+  24:	12 c0       	rjmp	.+36     	; 0x4a <_exit>
+
+00000026 <__bad_interrupt>:
+  26:	ec cf       	rjmp	.-40     	; 0x0 <__vectors>
+
+00000028 <main>:
+
+void delay_1ms(uint16_t);
+
+int main(void)
+{
+	DDRB	= 0xFF;
+  28:	4f ef       	ldi	r20, 0xFF	; 255
+  2a:	41 b9       	out	0x01, r20	; 1
+	OSCCAL	= 150;			// calibrate to 1MHz
+  2c:	46 e9       	ldi	r20, 0x96	; 150
+  2e:	49 bf       	out	0x39, r20	; 57
+
+    while(1)
+    {
+        PORTB	^=	0xFF;
+  30:	42 b1       	in	r20, 0x02	; 2
+  32:	40 95       	com	r20
+  34:	42 b9       	out	0x02, r20	; 2
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  36:	4f e7       	ldi	r20, 0x7F	; 127
+  38:	5a e1       	ldi	r21, 0x1A	; 26
+  3a:	66 e0       	ldi	r22, 0x06	; 6
+  3c:	41 50       	subi	r20, 0x01	; 1
+  3e:	50 40       	sbci	r21, 0x00	; 0
+  40:	60 40       	sbci	r22, 0x00	; 0
+  42:	e1 f7       	brne	.-8      	; 0x3c <__CCP__>
+  44:	00 c0       	rjmp	.+0      	; 0x46 <__SREG__+0x7>
+  46:	00 00       	nop
+  48:	f3 cf       	rjmp	.-26     	; 0x30 <main+0x8>
+
+0000004a <_exit>:
+  4a:	f8 94       	cli
+
+0000004c <__stop_program>:
+  4c:	ff cf       	rjmp	.-2      	; 0x4c <__stop_program>

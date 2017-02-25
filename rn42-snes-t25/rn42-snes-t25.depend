@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1473840540 source:c:\users\lenny\documents\elektronik\atmel\rn42-snes-t25\fuse.c
+	<avr/io.h>
+
+1475068082 source:c:\users\lenny\documents\elektronik\atmel\rn42-snes-t25\main.c
+	<avr/io.h>
+	<avr/eeprom.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+
+1474399076 c:\users\lenny\documents\elektronik\atmel\snes-controller-functions\snes-controller-functions.h
+	<string.h>
+	<avr/io.h>
+	<avr/eeprom.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+	<util/delay.h>
+

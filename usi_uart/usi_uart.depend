@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1477916533 source:c:\users\lenny\documents\elektronik\atmel\usi_uart\main.c
+	<avr/io.h>
+	<avr/interrupt.h>
+	<avr/pgmspace.h>
+	<util/delay.h>
+	"USI_UART_config.h"
+
+1477917112 c:\users\lenny\documents\elektronik\atmel\usi_uart\usi_uart_config.h
+
+1477916601 source:c:\users\lenny\documents\elektronik\atmel\usi_uart\usi_uart.c
+	<avr/io.h>
+	<avr/pgmspace.h>
+	<avr/interrupt.h>
+	<stdint.h>
+	"USI_UART_config.h"
+

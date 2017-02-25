@@ -1,0 +1,298 @@
+
+main.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000015e  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000009  00800060  00800060  000001d2  2**0
+                  ALLOC
+  2 .debug_aranges 00000020  00000000  00000000  000001d2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 0000006b  00000000  00000000  000001f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   000001fd  00000000  00000000  0000025d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 0000013e  00000000  00000000  0000045a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   0000022e  00000000  00000000  00000598  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000050  00000000  00000000  000007c8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000109  00000000  00000000  00000818  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    0000009b  00000000  00000000  00000921  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000048  00000000  00000000  000009bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0e c0       	rjmp	.+28     	; 0x1e <__ctors_end>
+   2:	1b c0       	rjmp	.+54     	; 0x3a <__bad_interrupt>
+   4:	1a c0       	rjmp	.+52     	; 0x3a <__bad_interrupt>
+   6:	19 c0       	rjmp	.+50     	; 0x3a <__bad_interrupt>
+   8:	18 c0       	rjmp	.+48     	; 0x3a <__bad_interrupt>
+   a:	18 c0       	rjmp	.+48     	; 0x3c <__vector_5>
+   c:	16 c0       	rjmp	.+44     	; 0x3a <__bad_interrupt>
+   e:	15 c0       	rjmp	.+42     	; 0x3a <__bad_interrupt>
+  10:	14 c0       	rjmp	.+40     	; 0x3a <__bad_interrupt>
+  12:	13 c0       	rjmp	.+38     	; 0x3a <__bad_interrupt>
+  14:	12 c0       	rjmp	.+36     	; 0x3a <__bad_interrupt>
+  16:	11 c0       	rjmp	.+34     	; 0x3a <__bad_interrupt>
+  18:	10 c0       	rjmp	.+32     	; 0x3a <__bad_interrupt>
+  1a:	0f c0       	rjmp	.+30     	; 0x3a <__bad_interrupt>
+  1c:	0e c0       	rjmp	.+28     	; 0x3a <__bad_interrupt>
+
+0000001e <__ctors_end>:
+  1e:	11 24       	eor	r1, r1
+  20:	1f be       	out	0x3f, r1	; 63
+  22:	cf ed       	ldi	r28, 0xDF	; 223
+  24:	cd bf       	out	0x3d, r28	; 61
+
+00000026 <__do_clear_bss>:
+  26:	10 e0       	ldi	r17, 0x00	; 0
+  28:	a0 e6       	ldi	r26, 0x60	; 96
+  2a:	b0 e0       	ldi	r27, 0x00	; 0
+  2c:	01 c0       	rjmp	.+2      	; 0x30 <.do_clear_bss_start>
+
+0000002e <.do_clear_bss_loop>:
+  2e:	1d 92       	st	X+, r1
+
+00000030 <.do_clear_bss_start>:
+  30:	a9 36       	cpi	r26, 0x69	; 105
+  32:	b1 07       	cpc	r27, r17
+  34:	e1 f7       	brne	.-8      	; 0x2e <.do_clear_bss_loop>
+  36:	84 d0       	rcall	.+264    	; 0x140 <main>
+  38:	90 c0       	rjmp	.+288    	; 0x15a <_exit>
+
+0000003a <__bad_interrupt>:
+  3a:	e2 cf       	rjmp	.-60     	; 0x0 <__vectors>
+
+0000003c <__vector_5>:
+volatile unsigned long timer0_millis = 0;
+static unsigned char timer0_fract = 0;
+
+//different name, TIMER0_OVF_vect to this
+SIGNAL(TIM0_OVF_vect)
+{
+  3c:	1f 92       	push	r1
+  3e:	0f 92       	push	r0
+  40:	0f b6       	in	r0, 0x3f	; 63
+  42:	0f 92       	push	r0
+  44:	11 24       	eor	r1, r1
+  46:	2f 93       	push	r18
+  48:	3f 93       	push	r19
+  4a:	4f 93       	push	r20
+  4c:	5f 93       	push	r21
+  4e:	6f 93       	push	r22
+  50:	7f 93       	push	r23
+  52:	8f 93       	push	r24
+  54:	9f 93       	push	r25
+  56:	af 93       	push	r26
+  58:	bf 93       	push	r27
+	// copy these to local variables so they can be stored in registers
+	// (volatile variables must be read from memory on every access)
+	unsigned long m = timer0_millis;
+  5a:	20 91 64 00 	lds	r18, 0x0064
+  5e:	30 91 65 00 	lds	r19, 0x0065
+  62:	40 91 66 00 	lds	r20, 0x0066
+  66:	50 91 67 00 	lds	r21, 0x0067
+	unsigned char f = timer0_fract;
+  6a:	70 91 68 00 	lds	r23, 0x0068
+	
+	m += MILLIS_INC;
+  6e:	da 01       	movw	r26, r20
+  70:	c9 01       	movw	r24, r18
+  72:	40 96       	adiw	r24, 0x10	; 16
+  74:	a1 1d       	adc	r26, r1
+  76:	b1 1d       	adc	r27, r1
+	f += FRACT_INC;
+  78:	67 2f       	mov	r22, r23
+  7a:	60 5d       	subi	r22, 0xD0	; 208
+	if (f >= FRACT_MAX) {
+  7c:	6d 37       	cpi	r22, 0x7D	; 125
+  7e:	30 f0       	brcs	.+12     	; 0x8c <__SREG__+0x4d>
+		f -= FRACT_MAX;
+  80:	6d 57       	subi	r22, 0x7D	; 125
+		m += 1;
+  82:	da 01       	movw	r26, r20
+  84:	c9 01       	movw	r24, r18
+  86:	41 96       	adiw	r24, 0x11	; 17
+  88:	a1 1d       	adc	r26, r1
+  8a:	b1 1d       	adc	r27, r1
+	}
+	
+	timer0_fract = f;
+  8c:	60 93 68 00 	sts	0x0068, r22
+	timer0_millis = m;
+  90:	80 93 64 00 	sts	0x0064, r24
+  94:	90 93 65 00 	sts	0x0065, r25
+  98:	a0 93 66 00 	sts	0x0066, r26
+  9c:	b0 93 67 00 	sts	0x0067, r27
+	timer0_overflow_count++;
+  a0:	80 91 60 00 	lds	r24, 0x0060
+  a4:	90 91 61 00 	lds	r25, 0x0061
+  a8:	a0 91 62 00 	lds	r26, 0x0062
+  ac:	b0 91 63 00 	lds	r27, 0x0063
+  b0:	01 96       	adiw	r24, 0x01	; 1
+  b2:	a1 1d       	adc	r26, r1
+  b4:	b1 1d       	adc	r27, r1
+  b6:	80 93 60 00 	sts	0x0060, r24
+  ba:	90 93 61 00 	sts	0x0061, r25
+  be:	a0 93 62 00 	sts	0x0062, r26
+  c2:	b0 93 63 00 	sts	0x0063, r27
+}
+  c6:	bf 91       	pop	r27
+  c8:	af 91       	pop	r26
+  ca:	9f 91       	pop	r25
+  cc:	8f 91       	pop	r24
+  ce:	7f 91       	pop	r23
+  d0:	6f 91       	pop	r22
+  d2:	5f 91       	pop	r21
+  d4:	4f 91       	pop	r20
+  d6:	3f 91       	pop	r19
+  d8:	2f 91       	pop	r18
+  da:	0f 90       	pop	r0
+  dc:	0f be       	out	0x3f, r0	; 63
+  de:	0f 90       	pop	r0
+  e0:	1f 90       	pop	r1
+  e2:	18 95       	reti
+
+000000e4 <millis>:
+
+unsigned long millis(void) {
+	unsigned long m;
+	uint8_t oldSREG = SREG;
+  e4:	8f b7       	in	r24, 0x3f	; 63
+	
+	// disable interrupts while we read timer0_millis or we might get an
+	// inconsistent value (e.g. in the middle of a write to timer0_millis)
+	cli();
+  e6:	f8 94       	cli
+	m = timer0_millis;
+  e8:	20 91 64 00 	lds	r18, 0x0064
+  ec:	30 91 65 00 	lds	r19, 0x0065
+  f0:	40 91 66 00 	lds	r20, 0x0066
+  f4:	50 91 67 00 	lds	r21, 0x0067
+	SREG = oldSREG;
+  f8:	8f bf       	out	0x3f, r24	; 63
+	
+	return m;
+}
+  fa:	b9 01       	movw	r22, r18
+  fc:	ca 01       	movw	r24, r20
+  fe:	08 95       	ret
+
+00000100 <setup>:
+
+// END Arduino wiring.c
+
+// Used from Arduino wiring.c - to setup the ATtiny
+void setup(void) {
+	sei(); // Turn on interrupts
+ 100:	78 94       	sei
+	
+	/* dumpt everything, and only added the 2 timers the attiny has */
+	// on the ATmega168, timer 0 is also used for fast hardware pwm
+	// (using phase-correct PWM would mean that timer 0 overflowed half as often
+	// resulting in different millis() behavior on the ATmega8 and ATmega168)
+	sbi(TCCR0A, WGM01);
+ 102:	8a b5       	in	r24, 0x2a	; 42
+ 104:	82 60       	ori	r24, 0x02	; 2
+ 106:	8a bd       	out	0x2a, r24	; 42
+	sbi(TCCR0A, WGM00);
+ 108:	8a b5       	in	r24, 0x2a	; 42
+ 10a:	81 60       	ori	r24, 0x01	; 1
+ 10c:	8a bd       	out	0x2a, r24	; 42
+	// set timer 0 prescale factor to 64
+	sbi(TCCR0B, CS01);
+ 10e:	83 b7       	in	r24, 0x33	; 51
+ 110:	82 60       	ori	r24, 0x02	; 2
+ 112:	83 bf       	out	0x33, r24	; 51
+	sbi(TCCR0B, CS00);
+ 114:	83 b7       	in	r24, 0x33	; 51
+ 116:	81 60       	ori	r24, 0x01	; 1
+ 118:	83 bf       	out	0x33, r24	; 51
+	// enable timer 0 overflow interrupt
+	sbi(TIMSK, TOIE0);
+ 11a:	89 b7       	in	r24, 0x39	; 57
+ 11c:	82 60       	ori	r24, 0x02	; 2
+ 11e:	89 bf       	out	0x39, r24	; 57
+	// timers 1 are used for phase-correct hardware pwm
+	// this is better for motors as it ensures an even waveform
+	// note, however, that fast pwm mode can achieve a frequency of up
+	// 8 MHz (with a 16 MHz clock) at 50% duty cycle
+	// set timer 1 prescale factor to 64
+	sbi(TCCR1, CS12); // Inside Gadgets fix
+ 120:	80 b7       	in	r24, 0x30	; 48
+ 122:	84 60       	ori	r24, 0x04	; 4
+ 124:	80 bf       	out	0x30, r24	; 48
+	sbi(TCCR1, CS11);
+ 126:	80 b7       	in	r24, 0x30	; 48
+ 128:	82 60       	ori	r24, 0x02	; 2
+ 12a:	80 bf       	out	0x30, r24	; 48
+	sbi(TCCR1, CS10);
+ 12c:	80 b7       	in	r24, 0x30	; 48
+ 12e:	81 60       	ori	r24, 0x01	; 1
+ 130:	80 bf       	out	0x30, r24	; 48
+	sbi(TCCR1, PWM1A);
+ 132:	80 b7       	in	r24, 0x30	; 48
+ 134:	80 64       	ori	r24, 0x40	; 64
+ 136:	80 bf       	out	0x30, r24	; 48
+		sbi(ADCSRA, ADPS0);
+	#elif F_CPU >= 8000000L //64
+		sbi(ADCSRA, ADPS2);
+		sbi(ADCSRA, ADPS1);
+	#else				//8
+		sbi(ADCSRA, ADPS1);
+ 138:	31 9a       	sbi	0x06, 1	; 6
+		sbi(ADCSRA, ADPS0);
+ 13a:	30 9a       	sbi	0x06, 0	; 6
+	#endif
+		// enable a2d conversions
+		sbi(ADCSRA, ADEN);
+ 13c:	37 9a       	sbi	0x06, 7	; 6
+ 13e:	08 95       	ret
+
+00000140 <main>:
+#define		ledPin		PB0
+#define		dly			250
+
+int main(void) {
+	
+	setup();
+ 140:	df df       	rcall	.-66     	; 0x100 <setup>
+	
+	DDRB |= (1<<ledPin); // Set LED as an output
+ 142:	b8 9a       	sbi	0x17, 0	; 23
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 144:	24 e2       	ldi	r18, 0x24	; 36
+ 146:	34 ef       	ldi	r19, 0xF4	; 244
+	
+	while(1) {
+		// Delay 1 second using delay_ms
+		PORTB |= (1<<ledPin); // Turn on
+ 148:	c0 9a       	sbi	0x18, 0	; 24
+ 14a:	c9 01       	movw	r24, r18
+ 14c:	01 97       	sbiw	r24, 0x01	; 1
+ 14e:	f1 f7       	brne	.-4      	; 0x14c <main+0xc>
+		_delay_ms(dly);
+		PORTB &= ~(1<<ledPin); // Turn off
+ 150:	c0 98       	cbi	0x18, 0	; 24
+ 152:	c9 01       	movw	r24, r18
+ 154:	01 97       	sbiw	r24, 0x01	; 1
+ 156:	f1 f7       	brne	.-4      	; 0x154 <main+0x14>
+ 158:	f7 cf       	rjmp	.-18     	; 0x148 <main+0x8>
+
+0000015a <_exit>:
+ 15a:	f8 94       	cli
+
+0000015c <__stop_program>:
+ 15c:	ff cf       	rjmp	.-2      	; 0x15c <__stop_program>

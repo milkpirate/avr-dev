@@ -1,0 +1,73 @@
+<h2>Schematics</h2>
+The below schematics show a tuxgraphics ethernet board
+with atmega168/atmega328p. If you use a atmega644/atmega644a based
+board then you will need to connect the parts external to the
+ethernet board at different pins. The external hardware is however
+the same.
+<br>
+<br>
+Pinout for <b>atmega644/atmega644a</b> based ethernet boards:
+<ul>
+<li>DS18S20 data pin = atmega pin PD6
+<li>Capacitive humidity sensor, tone output pin = OC0A = atmega pin PB3
+<li>Capacitive humidity sensor, precision rectifier output signal = ADC0 = atmega pin PA0
+<li>Manual watering button = atmega pin PB0
+<li>Dry soil LED (blinking) = between atmega pin PB1 and GND
+<li>Pump control (to relay driver) = PD7
+</ul>
+Pinout for <b>atmega168/atmega328p</b> based ethernet boards:
+<ul>
+<li>DS18S20 data pin = atmega pin PD6
+<li>Capacitive humidity sensor, tone output pin = OC0B = atmega pin PD5
+<li>Capacitive humidity sensor, precision rectifier output signal = ADC0 = atmega pin PC0
+<li>Manual watering button = atmega pin PB0
+<li>Dry soil LED (blinking) = between atmega pin PB1 and GND
+<li>Pump control (to relay driver) = PD7
+</ul>
+
+<hr>
+Click on the picture for a bigger schematic in pdf.
+<br>
+<h3>Using a small low power DC pump</h3>
+<br>
+<a href="flower-small-pump.pdf"><img src="flower-small-pump.png"></a>
+<br>
+<h3>Using a magnetic lawn sprinkler valve</h3>
+<br>
+Most magnetic sprinkler valves are designed to work with
+AC or DC. All of them generate a lot of sparks and ware off
+relays and switches easily.
+This is because magnetic sprinkler valves contain a big coil. 
+The best way to avoid wear of relay contacts is to run the
+magnetic sprinkler valves with DC and add a flyback diode.
+The flyback diode will kill any induced current and reduce the
+wear on the relay contacts. The additional advantage is that
+you reduce electromagnetic interfrence with other electronic
+equipment such as wifi systems and microcontrollers.
+<br>
+<br>
+Some IBM laptop power supplies provide 16V DC. 
+<br>
+<br>
+<a href="flower-lawnsprinkler-valve.pdf"><img src="flower-lawnsprinkler-valve.png"></a>
+<br>
+<h3>Using a magnetic valve from an old washing machine</h3>
+<br>
+Be really careful with line power and insulate the wires well. The
+magnetic valve must not be exposed to rain or humidity from outside.
+Washing machines are made for indoor use only. You need to keep such
+a setup in a dry graden shed.
+<br>
+<a href="flower-magnetic-washing-machine-valve.pdf"><img src="flower-magnetic-washing-machine-valve.png"></a>
+<br>
+<h2>DS18S20 sensor pinout</h2>
+<br>
+<img src="pinout-ds18s20.gif">
+<h2>TS272 operational amplifier pinout</h2>
+<br>
+<img src="pinout-ts272.gif"></a>
+
+<br>
+<hr>
+<br>
+Copyright: Guido Socher, tuxgraphics.org
